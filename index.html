@@ -231,6 +231,80 @@
   .import-log-entry .log-sep{color:var(--border-light);margin:0 1px}
   .import-log-entry .log-del{margin-left:auto;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:0.7rem;padding:0 2px;line-height:1;opacity:0.5;transition:opacity 0.15s}
   .import-log-entry .log-del:hover{opacity:1;color:var(--red)}
+  /* Schedule vs. worked (When I Work Shifts report + Timesheets export) */
+  tbody td.date-cell.sched-on{background:rgba(74,222,128,0.11);box-shadow:inset 0 0 0 1px rgba(74,222,128,0.22)}
+  tbody td.date-cell.sched-on:hover{background:rgba(74,222,128,0.2)}
+  .sch-time{display:block;font-size:0.6rem;font-weight:600;color:#4ade80;line-height:1.2;white-space:nowrap;letter-spacing:0.01em}
+  .sch-time + .sch-time{margin-top:1px}
+  /* Scheduled day that also has a point: 0.5 = faint orange block, 1 or NC/NS = faint red block */
+  tbody td.date-cell.sched-on.sched-half{background:rgba(245,158,11,0.13);box-shadow:inset 0 0 0 1px rgba(245,158,11,0.32)}
+  tbody td.date-cell.sched-on.sched-half:hover{background:rgba(245,158,11,0.22)}
+  .sched-half .sch-time{color:#f59e0b}
+  tbody td.date-cell.sched-on.sched-one{background:rgba(255,107,122,0.13);box-shadow:inset 0 0 0 1px rgba(255,107,122,0.32)}
+  tbody td.date-cell.sched-on.sched-one:hover{background:rgba(255,107,122,0.22)}
+  .sched-one .sch-time{color:#ff6b7a}
+  /* Scheduled day marked Excused = faint blue block */
+  tbody td.date-cell.sched-on.sched-exc{background:rgba(108,140,255,0.13);box-shadow:inset 0 0 0 1px rgba(108,140,255,0.34)}
+  tbody td.date-cell.sched-on.sched-exc:hover{background:rgba(108,140,255,0.22)}
+  .sched-exc .sch-time{color:#6c8cff}
+  /* Scheduled day covered by NYC-PS&STO sick time = light faint sky-blue block */
+  tbody td.date-cell.sched-on.sched-sick{background:rgba(56,189,248,0.10);box-shadow:inset 0 0 0 1px rgba(56,189,248,0.30)}
+  tbody td.date-cell.sched-on.sched-sick:hover{background:rgba(56,189,248,0.18)}
+  .sched-sick .sch-time{color:#7dd3fc}
+  /* Approved time off (When I Work Time-Off Requests): faint yellow; approved sick time: faint pink + 🤒 */
+  tbody td.date-cell.to-off{background:rgba(250,204,21,0.14);box-shadow:inset 0 0 0 1px rgba(250,204,21,0.38)}
+  tbody td.date-cell.to-off:hover{background:rgba(250,204,21,0.22)}
+  .to-off .sch-time{color:#fcd34d}
+  tbody td.date-cell.to-sick{background:rgba(244,114,182,0.12);box-shadow:inset 0 0 0 1px rgba(244,114,182,0.34)}
+  tbody td.date-cell.to-sick:hover{background:rgba(244,114,182,0.20)}
+  .to-sick .sch-time{color:#f9a8d4}
+  .to-emoji{font-size:0.8rem;line-height:1;margin-right:3px;vertical-align:-1px}
+  .to-emoji:only-child{margin-right:0}
+  .sch-ok{background:#4ade80}
+  .sch-warn{background:#f59e0b}
+  .sch-bad{background:#ff6b7a}
+  .sch-out{background:#38bdf8}
+  .sch-pend{background:#5c5f75}
+  .sched-box{margin-bottom:14px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px}
+  .sb-row{display:flex;gap:9px;align-items:flex-start;font-size:0.78rem;padding:3px 0}
+  .sb-dot{width:9px;height:9px;border-radius:50%;margin-top:4px;flex-shrink:0}
+  .sb-main{color:var(--text);font-weight:600}
+  .sb-pos{color:var(--text-muted);font-weight:400;font-size:0.7rem;margin-left:4px}
+  .sb-sub{color:var(--text-dim);font-size:0.74rem;margin-top:1px}
+  .pf-sub{font-size:0.66rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin:0 0 6px}
+  /* Profile attendance calendar */
+  #pfSched{margin-bottom:16px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px}
+  .pf-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .pf-cal-nav{display:flex;gap:6px}
+  .pf-cal-nav .btn{padding:2px 10px;font-size:0.85rem;line-height:1.2}
+  .pf-cal-months{display:flex;gap:16px;flex-wrap:wrap}
+  .pf-cal-month{flex:1 1 160px;min-width:160px}
+  .pf-cal-title{font-size:0.74rem;font-weight:700;color:var(--text);margin-bottom:6px;text-align:center}
+  .pf-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+  .pf-cal-dow{font-size:0.56rem;color:var(--text-muted);text-align:center;font-weight:700;padding-bottom:2px}
+  .pf-cal-day{aspect-ratio:1;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.64rem;font-weight:600;color:var(--text-muted);background:var(--surface3);position:relative;cursor:default}
+  .pf-cal-day.empty{background:none}
+  .pf-cal-day.cal-future{opacity:0.45}
+  .pf-cal-day.cal-today{box-shadow:0 0 0 1.5px var(--text-dim)}
+  .cal-worked{background:rgba(74,222,128,0.24)!important;color:#4ade80!important}
+  .cal-late{background:rgba(245,158,11,0.3)!important;color:#fbbf24!important}
+  .cal-absent{background:rgba(255,107,122,0.32)!important;color:#ff8a96!important}
+  .cal-noin{background:var(--surface3);box-shadow:inset 0 0 0 1.5px rgba(255,107,122,0.75)!important;color:#ff8a96!important}
+  .cal-excused{background:rgba(108,140,255,0.3)!important;color:#9fb2ff!important}
+  .cal-sick{background:rgba(56,189,248,0.28)!important;color:#7dd3fc!important}
+  .cal-sched{background:var(--surface3);box-shadow:inset 0 0 0 1px rgba(74,222,128,0.55);color:#4ade80!important}
+  .cal-tooff{background:rgba(250,204,21,0.22)!important;color:#fde68a!important}
+  .cal-tosick{background:rgba(244,114,182,0.30)!important;color:#f9a8d4!important}
+  .pf-cal-day.cal-wu::after{content:'';position:absolute;top:2px;right:2px;width:5px;height:5px;border-radius:50%;background:#facc15}
+  .pf-cal-summary{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-size:0.74rem;color:var(--text)}
+  .pf-cal-count i,.pf-cal-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .pf-cal-legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;font-size:0.66rem;color:var(--text-muted);align-items:center}
+  .pf-cal-legend .cal-wu-key{width:6px;height:6px;border-radius:50%;background:#facc15;vertical-align:1px}
+  .pf-cal-hint{flex-basis:100%}
+  #schedPreview{display:none;text-align:left;margin-top:12px;max-height:260px;overflow-y:auto;font-size:0.78rem;background:var(--bg);border-radius:8px;padding:12px}
+  .sp-file{font-size:0.76rem;color:var(--text-muted);margin-bottom:3px}
+  .sp-file.ok{color:var(--green)}
+  .sp-hint{font-size:0.72rem;color:#f59e0b;margin-top:8px}
   </style>
 </head>
 <body>
@@ -279,6 +353,11 @@
       <div class="key-sep"></div>
       <div class="key-item"><div class="key-swatch" style="background:#38bdf8"></div> PS&amp;STO used</div>
       <div class="key-item"><span style="color:#facc15;font-size:0.85rem">&#9733;</span> Has note</div>
+      <div class="key-sep sched-key"></div>
+      <div class="key-item sched-key"><div class="key-swatch" style="background:rgba(74,222,128,0.22);border:1px solid rgba(74,222,128,0.55)"></div> Scheduled (shift time shown)</div>
+      <div class="key-sep to-key"></div>
+      <div class="key-item to-key"><div class="key-swatch" style="background:rgba(250,204,21,0.20);border:1px solid rgba(250,204,21,0.5)"></div> Approved time off</div>
+      <div class="key-item to-key"><div class="key-swatch" style="background:rgba(244,114,182,0.24);border:1px solid rgba(244,114,182,0.55)"></div> &#129298; Approved sick time</div>
       <div class="key-sep"></div>
       <div class="key-item"><span class="ca-folder" style="margin-left:0;cursor:default"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span> Corrective action needed (click to open)</div>
     </div>
@@ -302,6 +381,7 @@
           <button class="mm-item" id="monthFilterBtn" onclick="toggleMonthFilterDropdown(event)"><span class="ic">&#128197;</span><span id="monthFilterLabel">All Months</span><span class="mm-right" id="monthChevron">&#9656;</span></button>
           <div class="mm-months" id="monthFilterMenu"></div>
           <button class="mm-item" id="hideBtn" onclick="toggleShowHidden()"><span class="ic">&#128065;</span><span id="hideBtnLabel">Show Hidden</span></button>
+          <button class="mm-item" id="schedBtn" onclick="toggleShowSched()" title="Show When I Work scheduled shifts on the grid"><span class="ic">&#9636;</span><span id="schedBtnLabel">Hide Schedule</span></button>
           <div class="mm-sep"></div>
           <button class="mm-item" onclick="menuAction(openImport)"><span class="ic">&#8593;</span>Import</button>
           <button class="mm-item" onclick="menuAction(openImportHistory)"><span class="ic">&#128339;</span>History<span class="log-count mm-right" id="importLogCount" style="display:none"></span></button>
@@ -340,6 +420,8 @@
     <h3 id="editTitle" style="font-style:italic">Edit Entry</h3>
     <p class="subtitle" id="editSubtitle"></p>
     <div id="editNote" style="display:none;margin-bottom:14px;padding:8px 12px;background:rgba(108,140,255,0.06);border:1px solid rgba(108,140,255,0.15);border-radius:8px;font-size:0.75rem;color:var(--text-dim);line-height:1.5"></div>
+    <div id="editTimeOff" class="sched-box" style="display:none"></div>
+    <div id="editSched" class="sched-box" style="display:none"></div>
     <div style="margin-bottom:14px">
       <label style="display:block;font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px">Value</label>
       <input type="text" id="editInput" placeholder="e.g. 0.5, 1, Excused, or blank to clear" style="width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:0.85rem;outline:none" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
@@ -386,12 +468,13 @@
 <div class="modal-overlay" id="importModal">
   <div class="import-box">
     <h3 style="margin-bottom:4px;font-weight:700;">Import Weekly Report</h3>
-    <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px;">Upload the attendance notices file, or a time-off requests report to excuse approved sick days</p>
+    <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px;">Upload the attendance notices file, or a time-off requests report to excuse approved sick days. For scheduled vs. worked, drop the When I Work <strong>Shifts</strong> report or <strong>Schedule</strong> export, plus the <strong>Timesheets</strong> export (several at once is fine).</p>
     <div class="drop-zone" id="dropZone">
-      <p><strong>Drop .xlsx file here</strong><br>or click to browse</p>
+      <p><strong>Drop .xlsx file(s) here</strong><br>or click to browse</p>
     </div>
-    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none">
+    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple style="display:none">
     <div class="import-preview" id="importPreview"></div>
+    <div id="schedPreview"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
       <button class="btn" onclick="closeImport()">Cancel</button>
       <button class="btn primary" id="confirmImportBtn" onclick="confirmImport()" style="display:none">Import Data</button>
@@ -481,11 +564,12 @@
 </div>
 
 <div class="modal-overlay" id="profileModal" onclick="if(event.target===this)closeProfile()">
-  <div class="modal" style="width:560px">
+  <div class="modal" style="width:640px">
     <h3 id="pfName">Budtender</h3>
     <p class="subtitle" id="pfSub"></p>
     <div class="pf-status" id="pfStatus"></div>
     <div class="pf-stats" id="pfStats"></div>
+    <div id="pfSched" style="display:none"></div>
     <div class="pf-fields">
       <div class="k">Employee ID</div><div><input type="text" id="pfId" placeholder="Not on file"></div>
       <div class="k">Email</div><div class="pf-row"><input type="email" id="pfEmail" placeholder="Not on file"><a id="pfEmailLink" href="#" target="_blank" rel="noopener">Email</a></div>
@@ -524,6 +608,8 @@ const daysRef = firebase.database().ref('attendance_usq_gm_days');
 const importLogRef = firebase.database().ref('importLog_usq_gm');
 const employeesRef = firebase.database().ref('employees_usq_gm');
 const caAlertsRef = firebase.database().ref('caAlertsSent_usq_gm');
+const schedRef = firebase.database().ref('schedule_usq_gm');
+const timeOffRef = firebase.database().ref('timeoff_usq_gm');
 
 let currentUserEmail = '';
 let importLogEntries = []; // sorted newest first
@@ -648,6 +734,8 @@ function showApp() {
   loadDays();
   loadEmployees();
   loadCAAlerts();
+  loadSchedule();
+  loadTimeOff();
 }
 auth.onAuthStateChanged(user => {
   if (user && !isAllowedEmail(user.email)) {
@@ -672,6 +760,12 @@ let allDates = [];
 let editingPerson = null;
 let editingDate = null;
 let pendingImport = null;
+let schedData = {};          // Firebase "schedule_usq_gm" (When I Work shifts + punches), see Schedule section
+let pendingSchedule = null;  // Shifts / Timesheets files waiting on "Import Data"
+let timeOffData = {};        // Firebase "timeoff_usq_gm": approved time off by person and day, see Time Off section
+let pendingTimeOff = null;   // Time-off report days waiting on "Import Data"
+let showSched = true;
+try { showSched = localStorage.getItem('bt_showSched_usq_gm') !== '0'; } catch(e) {}
 let viewMode = 'normal';
 let ptsMode = 'annual';
 let monthFilter = 'all';
@@ -766,6 +860,7 @@ function updateViewStatus() {
   if (viewMode !== 'normal') parts.push(viewMode === 'week' ? 'Week View' : 'Month View');
   if (monthFilter !== 'all') parts.push(monthLabel(monthFilter));
   if (showHidden) parts.push('Showing hidden');
+  if (!showSched && Object.keys(schedData.shifts || {}).length) parts.push('Schedule hidden');
   const el = document.getElementById('viewStatus');
   el.textContent = parts.join(' · ');
   el.style.display = parts.length ? '' : 'none';
@@ -829,24 +924,30 @@ document.addEventListener('click', e => {
 });
 function openImport() {
   document.getElementById('importModal').classList.add('active');
-  pendingImport = null; pendingEmployees = null;
+  pendingImport = null; pendingEmployees = null; pendingSchedule = null; pendingTimeOff = null;
   document.getElementById('importPreview').style.display = 'none';
   document.getElementById('confirmImportBtn').style.display = 'none';
   document.getElementById('confirmImportBtn').textContent = 'Import Data';
+  renderSchedPreview();
 }
-function closeImport() { document.getElementById('importModal').classList.remove('active'); pendingImport = null; pendingEmployees = null; }
+function closeImport() { document.getElementById('importModal').classList.remove('active'); pendingImport = null; pendingEmployees = null; pendingSchedule = null; pendingTimeOff = null; renderSchedPreview(); }
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
 dropZone.addEventListener('click', () => fileInput.click());
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('dragover'); if (e.dataTransfer.files.length) processFile(e.dataTransfer.files[0]); });
-fileInput.addEventListener('change', e => { if (e.target.files.length) processFile(e.target.files[0]); fileInput.value = ''; });
+dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('dragover'); Array.from(e.dataTransfer.files).forEach(processFile); });
+fileInput.addEventListener('change', e => { Array.from(e.target.files).forEach(processFile); fileInput.value = ''; });
 function processFile(file) {
   const reader = new FileReader();
   reader.onload = e => {
     try {
       const wb = XLSX.read(e.target.result, { type: 'array' });
+      // When I Work Shifts report / Timesheets export: scheduled vs. worked (no points).
+      // Checked first because the Timesheets file also has First/Last Name + Employee ID
+      // columns and would otherwise be mistaken for the employee list.
+      const sched = detectScheduleFile(wb);
+      if (sched) { patchIsoDateCells(wb, e.target.result); addScheduleFile(detectScheduleFile(wb), file); return; }
       const ws = wb.Sheets[wb.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
       if (!rows.length) { toast('File appears empty', 'error'); return; }
@@ -875,11 +976,11 @@ function parseIncidentLog(rows, nameCol, dateCol, typeCol) {
     const name = (row[nameCol]||'').toString().trim();
     const rawDate = row[dateCol];
     const type = (row[typeCol]||'').toString().trim().toLowerCase();
-    if (!name || !rawDate) return;
+    if (!name || !rawDate || isManager(name)) return;
     let ds = '';
     if (typeof rawDate === 'number') { const d = XLSX.SSF.parse_date_code(rawDate); ds = `${d.y}-${String(d.m).padStart(2,'0')}-${String(d.d).padStart(2,'0')}`; }
     else { const d = new Date(rawDate); ds = !isNaN(d) ? d.toISOString().split('T')[0] : rawDate.toString(); }
-    const sk = name.replace(/[^a-zA-Z0-9_, -]/g, '_');
+    const sk = aliasKey(name) || name.replace(/[^a-zA-Z0-9_, -]/g, '_');
     if (!parsed[sk]) parsed[sk] = { displayName: name, dates: {}, notes: {} };
     const val = mapType(type, row);
     if (val) {
@@ -925,7 +1026,7 @@ function findPersonKey(name) {
   const sk = name.replace(/[^a-zA-Z0-9_, -]/g, '_');
   if (attendanceData[sk]) return sk;
   const low = name.toLowerCase();
-  return Object.keys(attendanceData).find(k => (attendanceData[k].displayName||k).toLowerCase() === low) || null;
+  return Object.keys(attendanceData).find(k => (attendanceData[k].displayName||k).toLowerCase() === low) || aliasKey(name);
 }
 function parseTimeOff(rows, cols) {
   const col = re => cols.find(c => re.test(c.trim()));
@@ -934,6 +1035,35 @@ function parseTimeOff(rows, cols) {
   const byCol = col(/approved.*by/i);
   const parsed = {}, unmatched = new Set();
   let sickDays = 0, alreadyExcused = 0;
+  // Every approved request is kept for the grid: sick = faint pink + 🤒, anything else = faint yellow
+  const typeColName = typeCol, msgCol = col(/^message$/i);
+  const to = { data: {}, names: {}, from: '', to: '', requests: 0, days: 0, sick: 0, unmatched: new Set() };
+  rows.forEach((row, n) => {
+    const sd0 = toISODate(row[sdCol]), ed0 = toISODate(row[edCol]);
+    if (sd0) to.from = minStr(to.from, sd0);
+    if (ed0) to.to = maxStr(to.to, ed0);
+    if (!/^approved$/i.test((row[statusCol]||'').toString().trim())) return;
+    const name = (row[nameCol]||'').toString().trim();
+    if (!name || !sd0 || !ed0 || isManager(name)) return;
+    const type = (row[typeColName]||'').toString().trim(), sick = /sick/i.test(type);
+    const startM = timeOffMins(row[stCol], 0), endM = timeOffMins(row[etCol], 1440);
+    const by = byCol ? (row[byCol]||'').toString().trim() : '';
+    const msg = msgCol ? (row[msgCol]||'').toString().replace(/\s+/g, ' ').trim().slice(0, 140) : '';
+    const nm = splitName(name), pk = findPersonKey(name) || schedKeyFor(nm.fn, nm.ln);
+    to.requests++;
+    for (let d = sd0; d <= ed0; d = addDaysISO(d, 1)) {
+      const winStart = d === sd0 ? startM : 0, winEnd = d === ed0 ? endM : 1440;
+      if (winEnd <= winStart) continue; // e.g. request ending 12:00 am on this day
+      const rec = { k: sick ? 'sick' : 'off', t: type || (sick ? 'Sick' : 'Time off'), w: (winStart <= 0 && winEnd >= 1440) ? '' : timeOffWindow(winStart, winEnd) };
+      if (by) rec.by = by;
+      if (msg) rec.m = msg;
+      ((to.data[pk] = to.data[pk] || {})[d] = to.data[pk][d] || {})['r' + n] = rec;
+      to.names[pk] = name;
+      to.days++; if (sick) to.sick++;
+      if (!attendanceData[pk]) to.unmatched.add(name);
+    }
+  });
+  pendingTimeOff = to.days ? to : null;
   rows.forEach(row => {
     if (!/sick/i.test(row[typeCol]||'') || !/^approved$/i.test((row[statusCol]||'').toString().trim())) return;
     const name = (row[nameCol]||'').toString().trim();
@@ -951,21 +1081,14 @@ function parseTimeOff(rows, cols) {
       const p = attendanceData[key];
       const val = p.dates && p.dates[d];
       if (val === 'Excused') { alreadyExcused++; continue; }
-      if (getPoints(val) <= 0) continue;
+      // Approved sick time excuses any occurrence that day (0.5, 1 or NC/NS), whatever hours the request covers
+      if (getPoints(val) <= 0 && !/^nc\s*\/?\s*ns$/i.test((val||'').toString().trim())) continue;
       const note = (p.notes && p.notes[d]) || '';
-      const sm = note.match(/Shift:\s*([0-9:]+\s*[AP]M)\s*-\s*([0-9:]+\s*[AP]M)/i);
-      const shiftStart = sm ? parseTimeToMins(sm[1]) : null;
-      let shiftEnd = sm ? parseTimeToMins(sm[2]) : null;
-      if (shiftEnd !== null && shiftStart !== null && shiftEnd <= shiftStart) shiftEnd += 1440;
-      let covered;
-      if (shiftStart === null) covered = true;
-      else if (val.toString().trim() === '0.5') covered = winStart <= shiftStart && winEnd > shiftStart; // late: sick time must cover the shift start
-      else covered = winStart < shiftEnd && winEnd > shiftStart; // no-show: any overlap with the shift
-      if (!covered) continue;
+      if (parsed[key] && parsed[key].dates[d]) continue; // two sick requests on the same day
       if (!parsed[key]) parsed[key] = { displayName: p.displayName || key, dates: {}, notes: {}, was: {} };
       parsed[key].dates[d] = 'Excused';
       parsed[key].was[d] = val;
-      parsed[key].notes[d] = (note ? note + ' | ' : '') + 'Excused: approved sick time off' + (by ? ' (' + by + ')' : '');
+      parsed[key].notes[d] = (note ? note + ' | ' : '') + 'Excused (was ' + val + '): approved sick time off' + (by ? ' (' + by + ')' : '');
     }
   });
   showTimeOffPreview(parsed, { sickDays, alreadyExcused, unmatched: [...unmatched] });
@@ -977,15 +1100,18 @@ function showTimeOffPreview(parsed, stats) {
   changes.sort((a, b) => a.d.localeCompare(b.d));
   const fmt = ds => { const d = new Date(ds + 'T00:00:00'); return (d.getMonth()+1) + '/' + d.getDate(); };
   const p = document.getElementById('importPreview');
-  p.innerHTML = `<p style="margin-bottom:8px"><strong>Time-off report:</strong> ${stats.sickDays} approved sick days &middot; ${stats.alreadyExcused} already excused &middot; <strong>${changes.length}</strong> point${changes.length===1?'':'s'} to excuse</p>
-    ${stats.unmatched.length ? `<p style="margin-bottom:8px;color:var(--text-muted)">Not on tracker: ${stats.unmatched.join(', ')}</p>` : ''}
+  const to = pendingTimeOff;
+  const toLine = to ? `<p style="margin-bottom:8px"><strong>Shading:</strong> ${to.requests} approved requests &middot; <span style="color:#fcd34d">${to.days - to.sick} time-off days</span> (faint yellow) &middot; <span style="color:#f9a8d4">${to.sick} sick days &#129298;</span> (faint pink), ${fmt(to.from)} &ndash; ${fmt(to.to)}</p>` : '';
+  const notOn = [...new Set([...stats.unmatched, ...(to ? [...to.unmatched] : [])])].sort();
+  p.innerHTML = `${toLine}<p style="margin-bottom:8px"><strong>Sick time:</strong> ${stats.sickDays} approved sick days &middot; ${stats.alreadyExcused} already excused &middot; <strong>${changes.length}</strong> occurrence${changes.length===1?'':'s'} to excuse</p>
+    ${notOn.length ? `<p style="margin-bottom:8px;color:var(--text-muted)">Not on tracker: ${escHtml(notOn.join(', '))}</p>` : ''}
     ${changes.length ? `<table><thead><tr><th>Name</th><th>Date</th><th>Was</th><th>Now</th></tr></thead><tbody>
     ${changes.map(c => `<tr><td>${c.name}</td><td>${fmt(c.d)}</td><td>${c.was}</td><td style="color:var(--green)">Excused</td></tr>`).join('')}
-    </tbody></table>` : '<p style="color:var(--text-muted)">Nothing to change.</p>'}`;
+    </tbody></table>` : '<p style="color:var(--text-muted)">No occurrences to excuse.</p>'}`;
   p.style.display = 'block';
   const btn = document.getElementById('confirmImportBtn');
-  btn.textContent = 'Apply Excused';
-  btn.style.display = changes.length ? 'inline-flex' : 'none';
+  btn.textContent = changes.length ? 'Import + Excuse ' + changes.length : 'Import Data';
+  btn.style.display = (changes.length || to) ? 'inline-flex' : 'none';
 }
 // ─────────────────────────────────────────────────────────────────────────────
 function mapType(type, row) {
@@ -1056,7 +1182,7 @@ function parseGrid(rows, fnCol, lnCol, cols) {
     const fn=(row[fnCol]||'').toString().trim(), ln=(row[lnCol]||'').toString().trim();
     if (!fn&&!ln) return;
     const name = ln ? `${ln}, ${fn}` : fn;
-    const sk = name.replace(/[^a-zA-Z0-9_, -]/g, '_');
+    const sk = aliasKey(name) || name.replace(/[^a-zA-Z0-9_, -]/g, '_');
     if (!parsed[sk]) parsed[sk] = { displayName: name, dates: {} };
     dc.forEach(d => { const v=(row[d]||'').toString().trim(); if (v) parsed[sk].dates[d]=v; });
   });
@@ -1076,6 +1202,21 @@ function showPreview(parsed) {
   document.getElementById('confirmImportBtn').style.display = 'inline-flex';
 }
 function confirmImport() {
+  if (pendingSchedule) {
+    confirmScheduleImport();
+    if (!pendingImport && !pendingEmployees) { closeImport(); return; }
+  }
+  let toDays = 0;
+  if (pendingTimeOff) {
+    const to = pendingTimeOff;
+    toDays = confirmTimeOffImport();
+    if (!pendingImport || !Object.keys(pendingImport).length) {
+      pendingImport = null; closeImport();
+      logImport(Object.keys(to.data).length, fmtMD(to.from) + ' - ' + fmtMD(to.to), 'Time off: ' + toDays + ' days shaded');
+      toast('Shaded ' + toDays + ' approved time-off days', 'success');
+      return;
+    }
+  }
   if (pendingEmployees) { confirmEmployeeImport(); return; }
   if (!pendingImport) return;
   const caBefore = caPendingKeys();
@@ -1106,8 +1247,8 @@ function confirmImport() {
   saveData(); rebuildDates(); renderTable(); closeImport();
   if (isTimeOff) {
     const n = Object.values(snapshot).reduce((t, v) => t + Object.keys(v.dates).length, 0);
-    logImport(count, dateRange, 'Sick time off: ' + n + ' excused');
-    toast('Excused ' + n + ' points for approved sick time', 'success');
+    logImport(count, dateRange, 'Sick time off: ' + n + ' excused' + (toDays ? ', ' + toDays + ' days shaded' : ''));
+    toast('Excused ' + n + ' occurrence' + (n === 1 ? '' : 's') + ' for approved sick time' + (toDays ? ' and shaded ' + toDays + ' time-off days' : ''), 'success');
   } else {
     logImport(count, dateRange);
     toast('Imported ' + count + ' budtenders', 'success');
@@ -1118,6 +1259,22 @@ function rebuildDates() {
   const s = new Set();
   Object.values(attendanceData).forEach(p => { if (p.dates) Object.keys(p.dates).forEach(d => s.add(d)); });
   Object.keys(manualDays || {}).forEach(d => s.add(d));
+  // Scheduled days (up to today, not future schedule) for people on the tracker get a
+  // column too, so you can see the days they worked, not just the days with a point
+  if (showSched) {
+    const today = todayYMD();
+    Object.entries(schedData.shifts || {}).forEach(([pk, days]) => {
+      if (!attendanceData[pk]) return;
+      Object.keys(days || {}).forEach(d => { if (isYMD(d) && d <= today) s.add(d); });
+    });
+  }
+  {
+    const today = todayYMD();
+    Object.entries(timeOffData.days || {}).forEach(([pk, days]) => {
+      if (!attendanceData[pk]) return;
+      Object.keys(days || {}).forEach(d => { if (isYMD(d) && d <= today) s.add(d); });
+    });
+  }
   allDates = Array.from(s).sort();
 }
 function getPoints(val) {
@@ -1206,10 +1363,22 @@ function getLatestWriteup(dates) {
   Object.entries(dates).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([d,v]) => { const val=(v||'').toString().trim().toLowerCase(); if (writeupTypes.includes(val)) latest=val; });
   return latest;
 }
+// How close someone is to their next corrective action: green, then yellow at a third of
+// the way, orange at two thirds, red once the next step is due. A First Warning comes at
+// 3 points, but after a write-up the next step is 2 points away (1 after a Final).
+function wuStageColor(dates, prefix) {
+  const pts = getWriteupPts(dates), t = caThreshold(dates);
+  if (pts >= t) return prefix + 'red';
+  if (pts * 3 >= t * 2) return prefix + 'orange';
+  if (pts * 3 >= t) return prefix + (prefix === 'pts-' && pts === 0 ? 'zero' : 'yellow');
+  return prefix + (prefix === 'pts-' && pts === 0 ? 'zero' : 'green');
+}
 function getNameColor(dates, terminated, shownPts) {
   if (terminated) return 'name-terminated';
-  // Color follows the points column on screen (Annual, Last 6 Months or Last 90 Days)
-  const pts=(typeof shownPts==='number')?shownPts:(getLatestWriteup(dates)!==null?getWriteupPts(dates):getLast60Pts(dates));
+  // Written up: color follows the write-up points toward their next step
+  if (getLatestWriteup(dates) !== null) return wuStageColor(dates, 'name-');
+  // Never written up: color always follows the last 6 months, whatever points column is on screen
+  const pts=getPtsSince(dates, 6, 'months');
   if (pts>=3) return 'name-red';
   if (pts>=2) return 'name-orange';
   if (pts>=1) return 'name-yellow';
@@ -1290,7 +1459,7 @@ function getPeriodPoints(dates,periodKey,keyFn) {
 }
 function renderTable() {
   const q=(document.getElementById('searchBox').value||'').toLowerCase();
-  const people=Object.entries(attendanceData).filter(([k,v])=>(v.displayName||k).toLowerCase().includes(q)).sort((a,b)=>(a[1].displayName||a[0]).localeCompare(b[1].displayName||b[0]));
+  const people=Object.entries(attendanceData).filter(([k,v])=>!isManager(v.displayName||k)&&(v.displayName||k).toLowerCase().includes(q)).sort((a,b)=>(a[1].displayName||a[0]).localeCompare(b[1].displayName||b[0]));
   if (!people.length&&!Object.keys(attendanceData).length) {
     document.getElementById('emptyState').style.display='block';
     document.getElementById('mainTable').style.display='none'; return;
@@ -1333,11 +1502,12 @@ function renderTable() {
     if (periodInfo) {
       cells=filteredPeriods.map(p=>{ const pts=getPeriodPoints(dates,p,periodInfo.keyFn); const display=pts===0?'<span style="color:var(--text-muted)">&#183;</span>':(pts%1===0?pts:pts.toFixed(1)); return `<td class="period-cell ${pts>0?ptsColor(pts):''}">${display}</td>`; }).join('');
     } else {
-      cells=filteredDates.map(d=>{ const v=dates[d]||''; const hasUserNote=!!(userNotes[d]&&userNotes[d].trim()); const starHtml=hasUserNote?'<span class="note-star">&#9733;</span>':''; const lastEd=getCellEdits(person,d)[0]; const tip=[hasUserNote?userNotes[d]:'', lastEd?('Edited by '+lastEd.who+' \u00b7 '+fmtEditTs(lastEd.ts)):''].filter(Boolean).join('\n'); const titleAttr=tip?` title="${tip.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"`:'' ; return `<td class="date-cell" onclick="openEdit('${key.replace(/'/g,"\\'")}','${d}')"${titleAttr}>${cellHtml(v)}${starHtml}</td>`; }).join('');
+      cells=filteredDates.map(d=>{ const v=dates[d]||''; const hasUserNote=!!(userNotes[d]&&userNotes[d].trim()); const starHtml=hasUserNote?'<span class="note-star">&#9733;</span>':''; const lastEd=getCellEdits(person,d)[0]; const sc=showSched?schedCellParts(key,d,v):null; const tod=timeOffDay(key,d); const tip=[hasUserNote?userNotes[d]:'', tod?tod.title:'', sc?sc.title:'', lastEd?('Edited by '+lastEd.who+' \u00b7 '+fmtEditTs(lastEd.ts)):''].filter(Boolean).join('\n'); const titleAttr=tip?` title="${tip.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"`:'' ; const vs=String(v).trim(); const schCls=tod?' to-'+tod.k:!sc?'':' sched-on'+(getPoints(v)>=1||/^nc\s*\/?\s*ns$/i.test(vs)?' sched-one':getPoints(v)>0?' sched-half':/^excused$/i.test(vs)?' sched-exc':parseStoMins(v)!==null?' sched-sick':''); return `<td class="date-cell${schCls}" onclick="openEdit('${key.replace(/'/g,"\\'")}','${d}')"${titleAttr}>${tod&&tod.k==='sick'?'<span class="to-emoji">&#129298;</span>':''}${cellHtml(v)}${sc?sc.html:''}${starHtml}</td>`; }).join('');
     }
-    return `<tr><td class="${stoColorClass(stoRem)}" title="${getStoUsedMins(dates)>0?fmtMins(getStoUsedMins(dates))+' used of '+STO_ANNUAL_HOURS+':00':'No PS&STO used'}">${fmtStoHrs(stoRem)}</td><td><span class="name-badge clickable ${nc}" data-key="${escHtml(key)}" onclick="openProfile(this.dataset.key)" title="View profile">${fn}</span></td><td><span class="name-badge clickable ${nc}" data-key="${escHtml(key)}" onclick="openProfile(this.dataset.key)" title="View profile">${ln}</span>${wuTag}${caFolder}</td><td class="${ptsColor(mainPts)}">${mainPts>0?mainPts%1===0?mainPts:mainPts.toFixed(1):'0'}</td><td class="${ptsColor(wp)}">${wp>0?wp%1===0?wp:wp.toFixed(1):'0'}</td>${cells}</tr>`;
+    return `<tr><td class="${stoColorClass(stoRem)}" title="${getStoUsedMins(dates)>0?fmtMins(getStoUsedMins(dates))+' used of '+STO_ANNUAL_HOURS+':00':'No PS&STO used'}">${fmtStoHrs(stoRem)}</td><td><span class="name-badge clickable ${nc}" data-key="${escHtml(key)}" onclick="openProfile(this.dataset.key)" title="View profile">${fn}</span></td><td><span class="name-badge clickable ${nc}" data-key="${escHtml(key)}" onclick="openProfile(this.dataset.key)" title="View profile">${ln}</span>${wuTag}${caFolder}</td><td class="${ptsColor(mainPts)}">${mainPts>0?mainPts%1===0?mainPts:mainPts.toFixed(1):'0'}</td><td class="${getLatestWriteup(dates)!==null&&!termed?wuStageColor(dates,'pts-'):ptsColor(wp)}" title="${getLatestWriteup(dates)!==null&&!termed?fmtPts(wp)+' of '+caThreshold(dates)+' toward the '+CA_STAGES[caNextStage(dates)].label:''}">${wp>0?wp%1===0?wp:wp.toFixed(1):'0'}</td>${cells}</tr>`;
   }).join('');
   updateCABanner();
+  updateSchedKey();
   syncStickyCols();
 }
 // The first five columns are frozen. Each one's left edge has to equal the real width of the
@@ -1478,6 +1648,8 @@ function openEdit(pk,dt) {
   document.getElementById('userNoteInput').value=(p&&p.userNotes&&p.userNotes[dt])?p.userNotes[dt]:'';
   document.getElementById('hidePersonBtn').textContent=(p&&p.hidden)?'Unhide Budtender':'Hide Budtender';
   renderEditMeta(p, dt);
+  renderEditTimeOff(pk, dt);
+  renderEditSched(pk, dt);
   document.getElementById('editModal').classList.add('active');
   setTimeout(()=>input.focus(),100);
 }
@@ -1528,8 +1700,9 @@ function confirmClear() {
   if (!confirm('Are you sure?')) return;
   attendanceData={}; saveData(); rebuildDates(); renderTable(); toast('All data cleared','success');
 }
-// Managers don't clock in/out, so they're kept out of corrective actions and alert emails.
-const MANAGERS = [['mark','muniz'], ['jeff','mchale']];
+// Managers don't clock in/out, so they're kept out of corrective actions and alert emails,
+// skipped by every import (notices, time off, schedule, timesheets) and never shown in the grid.
+const MANAGERS = [['mark','muniz'], ['jeff','mchale'], ['jeff','uemura'], ['kaleo','grant'], ['jennifer','bartholomeo']];
 function isManager(name) {
   const s = (name || '').toString().toLowerCase();
   let fn, ln;
@@ -1540,7 +1713,7 @@ function isManager(name) {
   return MANAGERS.some(([f, l]) => clean(fn) === f && clean(ln) === l);
 }
 function toLocalYMD(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-// ── Corrective Action (auto-generated at 3 points) ───────────────────────────
+// ── Corrective Action (auto-generated at 3 points; after a write-up 2, 2, then 1) ──
 // Anyone whose current points (same number that turns the name red: points since
 // their last write-up, or last-60-days if never written up) reach 3 gets a
 // corrective-action form pre-filled from the occurrence history. "Record in
@@ -1556,7 +1729,11 @@ function caTitleFor(fn, ln) {
   if (e && /supervisor/i.test(e.positions || '')) return 'Supervisor';
   return CA_CONFIG.title;
 }
-const CA_THRESHOLD = 3;
+const CA_THRESHOLD = 3;   // points for a First Warning (never written up, or after a Completed cycle)
+// After a write-up the next step comes sooner: 2 more points for the Second Warning,
+// 2 more for the Final Warning, then 1 more means Termination.
+const CA_STAGE_PTS = { first: 3, second: 2, final: 2, termination: 1 };
+function caThreshold(dates) { return CA_STAGE_PTS[caNextStage(dates || {})] || CA_THRESHOLD; }
 const CA_STAGES = {
   first:       { label: 'First Warning',  marker: '1st' },
   second:      { label: 'Second Warning', marker: '2nd' },
@@ -1577,6 +1754,43 @@ function splitName(name) {
   return { fn, ln };
 }
 function empKey(fn, ln) { return (fn + '_' + ln).toLowerCase().replace(/[^a-z0-9_]/g, ''); }
+// Other names a budtender has gone by in When I Work ("Sylvasia Warren" is now "Vasia Warren").
+// A merged row keeps them in `aliases`, so every import (notices, schedule, timesheets,
+// time off) puts that name on the one row instead of making a duplicate.
+function aliasKey(name) {
+  const norm = n => { const s = splitName(String(n || '').trim()); return (s.fn + ' ' + s.ln).toLowerCase().replace(/\s+/g, ' ').trim(); };
+  const want = norm(name);
+  if (!want) return null;
+  return Object.keys(attendanceData).find(k => Object.values((attendanceData[k] || {}).aliases || {}).some(a => norm(a) === want)) || null;
+}
+// Fold a duplicate row into the one to keep: dates, notes, star notes and edit history move
+// over (the kept row wins if both have the same day), the old name becomes an alias, and
+// schedule / time-off data saved under the old name moves too. Undo restores the rows.
+function mergePeople(src, dst) {
+  const a = attendanceData[src], b = attendanceData[dst];
+  if (!a || !b || src === dst) return null;
+  ['dates', 'notes', 'userNotes', 'edits'].forEach(f => { if (a[f]) b[f] = Object.assign({}, a[f], b[f] || {}); });
+  const al = new Set(Object.values(b.aliases || {}));
+  [a.displayName || src, ...Object.values(a.aliases || {})].forEach(x => al.add(x));
+  al.delete(b.displayName || dst);
+  b.aliases = [...al];
+  delete attendanceData[src];
+  const moveIn = (ref, data, buckets) => {
+    const up = {};
+    buckets.forEach(bk => {
+      const o = (data[bk] || {})[src];
+      if (!o) return;
+      Object.entries(o).forEach(([ds, v]) => { if (!(((data[bk] || {})[dst] || {})[ds])) up[bk + '/' + dst + '/' + ds] = v; });
+      up[bk + '/' + src] = null;
+    });
+    if ((data.names || {})[src]) up['names/' + src] = null;
+    if (Object.keys(up).length) ref.update(up).catch(err => toast('Move failed: ' + err.message, 'error'));
+  };
+  moveIn(schedRef, schedData, ['shifts', 'punches']);
+  moveIn(timeOffRef, timeOffData, ['days']);
+  saveData(); rebuildDates(); renderTable();
+  return b;
+}
 
 // ── Employee ID list ──
 function loadEmployees() {
@@ -1689,12 +1903,13 @@ function caNextStage(dates) {
   if (wu === 'final') return 'termination';
   return 'first';   // never written up, or last cycle was marked Completed
 }
-function caCurrentPts(dates) { return getLatestWriteup(dates) !== null ? getWriteupPts(dates) : getLast60Pts(dates); }
+// Never written up: points from the last 6 months. Written up: points since the latest write-up.
+function caCurrentPts(dates) { return getLatestWriteup(dates) !== null ? getWriteupPts(dates) : getPtsSince(dates, 6, 'months'); }
 function caNeeds(person) {
   if (!person || person.hidden || isManager(person.displayName)) return false;
   const dates = person.dates || {};
   if (isTerminated(dates)) return false;
-  return caCurrentPts(dates) >= CA_THRESHOLD;
+  return caCurrentPts(dates) >= caThreshold(dates);
 }
 function caPendingKeys() { return Object.keys(attendanceData).filter(k => !isManager(k) && caNeeds(attendanceData[k])); }
 // The occurrences that make up the person's current points, oldest first.
@@ -1704,7 +1919,7 @@ function caGetOccurrences(person) {
   let lastWU = null;
   if (hasWU) Object.entries(dates).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([d,v]) => { if (['1st','2nd','final','terminated','term','completed'].includes((v||'').toString().trim().toLowerCase())) lastWU = d; });
   const today = new Date(); today.setHours(0,0,0,0);
-  const cutoff = new Date(today); cutoff.setDate(cutoff.getDate() - 60);
+  const cutoff = new Date(today); cutoff.setMonth(cutoff.getMonth() - 6);
   const out = [];
   Object.entries(dates).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([d,v]) => {
     const pts = getPoints(v); if (!pts) return;
@@ -1799,7 +2014,7 @@ function cleanupIdImport() {
   toast('Removed ' + names.length + ' duplicate rows', 'success');
 }
 
-// ── Email alert at 3 points (EmailJS) ──
+// ── Email alert when the next corrective action is due (EmailJS) ──
 // One email per person per discipline cycle. The "sent" marker lives in Firebase
 // (caAlertsSent/<key> = stage|last write-up date) and is claimed with a transaction,
 // so only one open copy of the tracker sends it. The marker is cleared once the
@@ -1849,36 +2064,79 @@ function caAlertContent(k) {
     };
   } catch (e) { console.warn('Could not build corrective action content:', e); return { email: '', form: '' }; }
 }
+// EmailJS accepts about 1 request per second, so alerts go out one at a time, spaced
+// apart (sending several at once got them rejected). A key that's queued or sending
+// can't be queued again by the next re-render.
+const CA_SEND_GAP_MS = 1500;
+const caSendInFlight = new Set();
+let caSendQueue = Promise.resolve();
+function caWait(ms) { return new Promise(r => setTimeout(r, ms)); }
 function caSyncAlerts() {
   if (!caAlertsLoaded || !caDataLoaded || !window.emailjs) return;
   const pending = caPendingKeys();
   // clear markers for people no longer on the list
   Object.keys(caAlertsSent).forEach(k => { if (!pending.includes(k)) caAlertsRef.child(k).remove().catch(()=>{}); });
+  caForgetSentExcept(pending);
   pending.forEach(k => {
     const sig = caAlertSig(attendanceData[k]);
-    if (caAlertsSent[k] === sig || caSendFailed.has(k + '|' + sig)) return;
-    caAlertsRef.child(k).transaction(cur => cur === sig ? undefined : sig).then(res => {
-      if (!res.committed) return;   // someone else already sent it
-      const p = attendanceData[k]; if (!p) return;
-      const nm = splitName(p.displayName || k);
-      const ca = caAlertContent(k);
-      return emailjs.send(CA_EMAIL.serviceId, CA_EMAIL.templateId, {
-        employee_name: (nm.fn + ' ' + nm.ln).trim(),
-        points: fmtPts(caCurrentPts(p.dates || {})),
-        next_stage: CA_STAGES[caNextStage(p.dates || {})].label,
-        store: 'USQ GM',
-        cc_email: ALLOWED_EMAIL,
-        ca_email: ca.email,
-        ca_form_html: ca.form
-      }).then(() => toast('Alert emailed: ' + nm.fn + ' ' + nm.ln + ' reached ' + CA_THRESHOLD + ' points', 'success'))
-        .catch(err => {
-          console.warn('EmailJS send failed:', err);
-          caSendFailed.add(k + '|' + sig);
-          toast('Alert email failed for ' + nm.fn + ' ' + nm.ln, 'error');
-          caAlertsRef.child(k).remove().catch(()=>{});   // allow a retry next load
-        });
-    }).catch(err => console.warn('Alert marker save failed:', err.message));
+    if (caAlertsSent[k] === sig || caSendFailed.has(k + '|' + sig) || caSendInFlight.has(k) || caAlreadySent(k, sig)) return;
+    caSendInFlight.add(k);
+    caSendQueue = caSendQueue
+      .then(() => caSendAlert(k, sig))
+      .catch(err => console.warn('Alert send error:', err && (err.message || err.text || err)))
+      .then(() => { caSendInFlight.delete(k); return caWait(CA_SEND_GAP_MS); });
   });
+}
+// "Already emailed" memory kept in this browser as well as the Firebase marker, so a
+// copy of the tracker that erases the marker can't make this one send the same alert
+// again. Cleared when the person drops off the list; expires after 7 days.
+const CA_SENT_LS = 'caAlertSentLocal_usq_gm', CA_SENT_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const caSentThisSession = new Set();
+function caSentLocalRead() { try { return JSON.parse(localStorage.getItem(CA_SENT_LS) || '{}') || {}; } catch (e) { return {}; } }
+function caSentLocalWrite(m) { try { localStorage.setItem(CA_SENT_LS, JSON.stringify(m)); } catch (e) {} }
+function caAlreadySent(k, sig) {
+  if (caSentThisSession.has(k + '|' + sig)) return true;
+  const e = caSentLocalRead()[k];
+  return !!(e && e.sig === sig && Date.now() - e.at < CA_SENT_TTL_MS);
+}
+function caMarkSent(k, sig) {
+  caSentThisSession.add(k + '|' + sig);
+  const m = caSentLocalRead(); m[k] = { sig, at: Date.now() }; caSentLocalWrite(m);
+}
+function caForgetSentExcept(pending) {
+  const m = caSentLocalRead(); let changed = false;
+  Object.keys(m).forEach(k => { if (!pending.includes(k) || Date.now() - m[k].at >= CA_SENT_TTL_MS) { delete m[k]; changed = true; } });
+  [...caSentThisSession].forEach(s => { if (!pending.includes(s.split('|')[0])) caSentThisSession.delete(s); });
+  if (changed) caSentLocalWrite(m);
+}
+function caSendAlert(k, sig) {
+  if (caAlreadySent(k, sig)) return Promise.resolve();
+  return caAlertsRef.child(k).transaction(cur => cur === sig ? undefined : sig).then(res => {
+    if (!res.committed) return;   // someone else already sent it
+    const p = attendanceData[k]; if (!p) return;
+    const nm = splitName(p.displayName || k);
+    const ca = caAlertContent(k);
+    const params = {
+      employee_name: (nm.fn + ' ' + nm.ln).trim(),
+      points: fmtPts(caCurrentPts(p.dates || {})),
+      next_stage: CA_STAGES[caNextStage(p.dates || {})].label,
+      store: 'USQ GM',
+      cc_email: ALLOWED_EMAIL,
+      ca_email: ca.email,
+      ca_form_html: ca.form
+    };
+    const send = () => emailjs.send(CA_EMAIL.serviceId, CA_EMAIL.templateId, params);
+    // one retry after a pause if EmailJS says we're going too fast (429)
+    return send().catch(err => (err && err.status === 429) ? caWait(4000).then(send) : Promise.reject(err))
+      .then(() => caMarkSent(k, sig))
+      .then(() => toast('Alert emailed: ' + nm.fn + ' ' + nm.ln + ' reached ' + caThreshold(p.dates || {}) + ' points', 'success'))
+      .catch(err => {
+        console.warn('EmailJS send failed:', err && err.status, err && err.text, err);
+        caSendFailed.add(k + '|' + sig);
+        toast('Alert email failed for ' + nm.fn + ' ' + nm.ln, 'error');
+        caAlertsRef.child(k).remove().catch(()=>{});   // allow a retry next load
+      });
+  }).catch(err => console.warn('Alert marker save failed:', err.message));
 }
 
 // ── Banner + auto prompt ──
@@ -2082,6 +2340,623 @@ function caRecord() {
   toast(marker + ' recorded for ' + name, 'success');
 }
 // ── Budtender profile (click a name) ──
+// ── Schedule vs. worked (When I Work Shifts report + Timesheets export) ──────
+// Display only: this never adds or changes points. Points still come from the
+// Attendance Notices import. Lives in its own Firebase node so it can't touch
+// attendance data, undo, or cell history.
+//   schedule_usq_gm/shifts/{person}/{YYYY-MM-DD}/{shiftId} = { s, e, pos, tc, a }
+//     s/e = scheduled start/end "YYYY-MM-DDTHH:MM", tc = WIW "Has Timeclock Entry",
+//     a = earliest time the report could have been pulled (see shiftsAsOf)
+//   schedule_usq_gm/punches/{person}/{YYYY-MM-DD}/{HHMM} = { i, o }  actual clock in/out
+//   schedule_usq_gm/punchDays/{YYYY-MM-DD} = latest punch in the Timesheets export covering that day
+//   schedule_usq_gm/names/{person} = "First Last" (for people not in the tracker yet)
+// Importing a file replaces what's stored for the dates that file covers, so a
+// shift deleted in When I Work disappears on the next import.
+// Only real YYYY-MM-DD keys become schedule columns
+function isYMD(d) { return /^\d{4}-\d{2}-\d{2}$/.test(d); }
+// 75 -> "1h 15m", 20 -> "20m"
+function schedMinsLabel(mins) {
+  const h = Math.floor(mins / 60), m = mins % 60;
+  if (h && m) return h + 'h ' + m + 'm';
+  if (h) return h + 'h';
+  return m + 'm';
+}
+const SCHED_GRACE_MIN = 8; // same rule as late points: under 8 minutes isn't late
+// Dot color in the edit popup for each shift's outcome
+const SCHED_META = {
+  absent:  { cls: 'bad',  rank: 5 },
+  late:    { cls: 'warn', rank: 4 },
+  early:   { cls: 'warn', rank: 3 },
+  callout: { cls: 'out',  rank: 2 },
+  ok:      { cls: 'ok',   rank: 1 },
+  worked:  { cls: 'ok',   rank: 1 },
+  nodata:  { cls: 'pend', rank: 0 }, // past shift, but no clock-in info imported for it
+  pending: { cls: 'pend', rank: 0 }
+};
+function loadSchedule() {
+  schedRef.off();
+  schedRef.on('value', snap => {
+    schedData = snap.val() || {};
+    rebuildDates(); renderTable(); updateViewStatus();
+    if (editingPerson && editingDate) renderEditSched(editingPerson, editingDate);
+    if (pfPerson) renderPfCal();
+  }, err => console.warn('Schedule load failed:', err.message));
+}
+function syncSchedBtn() {
+  const b = document.getElementById('schedBtn');
+  if (b) b.classList.toggle('on', showSched);
+  const l = document.getElementById('schedBtnLabel');
+  if (l) l.textContent = showSched ? 'Hide Schedule' : 'Show Schedule';
+}
+function toggleShowSched() {
+  showSched = !showSched;
+  try { localStorage.setItem('bt_showSched_usq_gm', showSched ? '1' : '0'); } catch(e) {}
+  syncSchedBtn(); closeMainMenu(); updateViewStatus(); rebuildDates(); renderTable();
+}
+syncSchedBtn();
+function updateSchedKey() {
+  const on = showSched && Object.keys(schedData.shifts || {}).length > 0;
+  document.querySelectorAll('.sched-key').forEach(el => { el.style.display = on ? '' : 'none'; });
+}
+
+// ── Date/time helpers. Times are kept as local wall-clock strings and compared
+// with Date.UTC math, so no timezone conversion can shift a day or an hour.
+const pad2 = n => String(n).padStart(2, '0');
+function ymdAdd(ds, n) {
+  const [y, m, d] = ds.split('-').map(Number);
+  const t = new Date(Date.UTC(y, m - 1, d + n));
+  return t.getUTCFullYear() + '-' + pad2(t.getUTCMonth() + 1) + '-' + pad2(t.getUTCDate());
+}
+function dtMin(s) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(s || '');
+  return m ? Date.UTC(+m[1], m[2] - 1, +m[3], +m[4], +m[5]) / 60000 : null;
+}
+function localDT(ms) { const d = new Date(ms); return toLocalYMD(d) + 'T' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()); }
+function fmt12(dt) {
+  const t = (dt || '').slice(11, 16); if (!t) return '';
+  let [h, m] = t.split(':').map(Number); const ap = h >= 12 ? 'PM' : 'AM';
+  return (h % 12 || 12) + ':' + pad2(m) + ' ' + ap;
+}
+function fmtMD(ds) { const [, m, d] = ds.split('-'); return parseInt(m) + '/' + parseInt(d); }
+// Excel cell -> { d: 'YYYY-MM-DD' or '', t: 'HH:MM' or '' }
+function xlParts(v) {
+  if (v === '' || v == null) return null;
+  const hm = mins => pad2(Math.floor(mins / 60)) + ':' + pad2(mins % 60);
+  if (typeof v === 'number') {
+    const p = XLSX.SSF.parse_date_code(v); if (!p) return null;
+    return { d: v >= 1 ? p.y + '-' + pad2(p.m) + '-' + pad2(p.d) : '', t: pad2(p.H) + ':' + pad2(p.M) };
+  }
+  if (v instanceof Date) return isNaN(v) ? null : { d: toLocalYMD(v), t: pad2(v.getHours()) + ':' + pad2(v.getMinutes()) };
+  const s = String(v).trim();
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{1,2}):(\d{2}))?/);
+  if (m) return { d: m[1] + '-' + m[2] + '-' + m[3], t: m[4] ? pad2(m[4]) + ':' + m[5] : '' };
+  m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})(.*)$/);
+  if (m) {
+    const y = m[3].length === 2 ? '20' + m[3] : m[3], tm = parseTimeToMins(m[4] || '');
+    return { d: y + '-' + pad2(m[1]) + '-' + pad2(m[2]), t: tm === null ? '' : hm(tm) };
+  }
+  const tm = parseTimeToMins(s);
+  return tm === null ? null : { d: '', t: hm(tm) };
+}
+// Date from the date column unless the time column carries its own date
+function xlCombine(dateVal, timeVal) {
+  const a = xlParts(dateVal), b = xlParts(timeVal);
+  const d = (b && b.d) || (a && a.d) || '', t = (b && b.t) || (a && a.t) || '';
+  return d && t ? d + 'T' + t : '';
+}
+// Overnight shift (4 PM to 12 AM): an end before the start belongs to the next day
+function fixEnd(s, e) { return (s && e && dtMin(e) < dtMin(s)) ? ymdAdd(e.slice(0, 10), 1) + e.slice(10) : e; }
+function xlBool(v) {
+  if (typeof v === 'boolean') return v;
+  const s = String(v == null ? '' : v).trim().toLowerCase();
+  if (/^(true|yes|y|1)$/.test(s)) return true;
+  if (/^(false|no|n|0)$/.test(s)) return false;
+  return undefined;
+}
+const maxStr = (a, b) => (!a ? b : !b ? a : (a > b ? a : b));
+const minStr = (a, b) => (!a ? b : !b ? a : (a < b ? a : b));
+
+// The Shifts report stores its dates as ISO text cells (t="d", local time, no zone).
+// SheetJS converts those to numbers shifted by the timezone offset (a 4 PM shift
+// came out as 9 PM), so swap each one back to the exact text in the file.
+function patchIsoDateCells(wb, buf) {
+  try {
+    const cfb = XLSX.CFB.read(new Uint8Array(buf), { type: 'array' });
+    const dec = new TextDecoder();
+    const txt = p => { const f = XLSX.CFB.find(cfb, '/' + p) || XLSX.CFB.find(cfb, p); return f && f.content ? dec.decode(f.content) : ''; };
+    const wbx = txt('xl/workbook.xml'), rels = txt('xl/_rels/workbook.xml.rels');
+    if (!wbx || !rels) return;
+    const targets = {};
+    (rels.match(/<Relationship\b[^>]*>/g) || []).forEach(tag => {
+      const id = /\bId="([^"]+)"/.exec(tag), t = /\bTarget="([^"]+)"/.exec(tag);
+      if (id && t) targets[id[1]] = t[1];
+    });
+    const unxml = s => s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+    (wbx.match(/<sheet\b[^>]*>/g) || []).forEach(tag => {
+      const nm = /\bname="([^"]+)"/.exec(tag), rid = /\br:id="([^"]+)"/.exec(tag);
+      if (!nm || !rid || !targets[rid[1]]) return;
+      const ws = wb.Sheets[unxml(nm[1])]; if (!ws) return;
+      let path = targets[rid[1]].replace(/^\//, '');
+      if (!/^xl\//.test(path)) path = 'xl/' + path;
+      const xml = txt(path); if (!xml) return;
+      const re = /<c\b([^>]*\bt="d"[^>]*)>\s*<v>([^<]*)<\/v>/g; let m;
+      while ((m = re.exec(xml))) {
+        const ref = /\br="([A-Z]+\d+)"/.exec(m[1]), iso = m[2].trim();
+        if (ref && ws[ref[1]] && /^\d{4}-\d{2}-\d{2}/.test(iso)) ws[ref[1]] = { t: 's', v: iso, w: iso };
+      }
+    });
+  } catch (err) { console.warn('ISO date cell fix skipped:', err); }
+}
+// ── Which file is it?
+function detectScheduleFile(wb) {
+  for (const sn of wb.SheetNames) {
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { defval: '' });
+    if (!rows.length) continue;
+    const cols = Object.keys(rows[0]);
+    const has = re => cols.some(c => re.test(c.trim()));
+    if (has(/^assignee name$/i) && has(/^start (date|time)$/i)) return { kind: 'shifts', rows, cols };
+    // When I Work "Schedule" export ("Schedules" sheet: one row per shift, no clock-in info)
+    if (has(/^first name$/i) && has(/^last name$/i) && has(/^shift start date$/i) && has(/^shift start time$/i) && has(/^shift end time$/i)) return { kind: 'schedule', rows, cols };
+    if (has(/^first name$/i) && has(/^last name$/i) && has(/^start time$/i) && has(/^end time$/i) && has(/^(regular|paid total|unpaid breaks)$/i)) return { kind: 'punches', rows, cols };
+  }
+  return null;
+}
+// Match a WIW name to the tracker row ("Gonzalez, Will" -> "Will Gonzalez"), nicknames included
+function schedKeyFor(first, last) {
+  first = (first || '').trim(); last = (last || '').trim();
+  const want = empKey(first, last), f = first.toLowerCase(), l = last.toLowerCase();
+  let hit = null; const nick = [];
+  Object.entries(attendanceData).forEach(([k, p]) => {
+    const nm = splitName(p.displayName || k), nf = (nm.fn || '').toLowerCase();
+    if (empKey(nm.fn, nm.ln) === want) hit = k;
+    else if ((nm.ln || '').toLowerCase() === l && f && nf && (nf.startsWith(f) || f.startsWith(nf))) nick.push(k);
+  });
+  if (hit) return hit;
+  const ak = aliasKey(first + ' ' + last); if (ak) return ak;
+  if (nick.length === 1) return nick[0];
+  return (first + ' ' + last).trim().replace(/[^a-zA-Z0-9_, -]/g, '_');
+}
+function schedSkip(name, pos) { return isManager(name) || /ambassador|general manager/i.test(pos || ''); }
+const putIn = (obj, pk, ds, id, rec) => { ((obj[pk] = obj[pk] || {})[ds] = obj[pk][ds] || {})[id] = rec; };
+
+// The report has no "generated at" time. It was pulled after the latest shift that
+// already shows a clock-in started (less an hour, in case that person clocked in
+// early) and no later than the file's save time. A shift with no clock-in only
+// counts as absent if it ended before that point, so a shift that was still
+// coming up or in progress when the report was pulled is never flagged.
+function parseShiftsReport(rows, cols, cap) {
+  const col = re => cols.find(c => re.test(c.trim()));
+  const nameC = col(/^assignee name$/i), idC = col(/^shift id$/i), sdC = col(/^start date$/i), stC = col(/^start time$/i),
+        edC = col(/^end date$/i), etC = col(/^end time$/i), posC = col(/^position( name)?$/i), tcC = col(/^has timeclock entry$/i);
+  const out = { kind: 'shifts', data: {}, names: {}, from: '', to: '', count: 0, a: '', noTc: !tcC };
+  let seen = '';
+  rows.forEach((r, n) => {
+    const s = xlCombine(sdC ? r[sdC] : '', stC ? r[stC] : '');
+    if (!s) return;
+    const ds = s.slice(0, 10);
+    out.from = minStr(out.from, ds); out.to = maxStr(out.to, ds);
+    const name = (r[nameC] || '').toString().trim();
+    const pos = posC ? (r[posC] || '').toString().trim() : '';
+    const tc = tcC ? xlBool(r[tcC]) : undefined;
+    if (tc === true) seen = maxStr(seen, s);
+    if (!name || schedSkip(name, pos)) return; // OpenShift (nobody assigned) or a manager
+    const nm = splitName(name), pk = schedKeyFor(nm.fn, nm.ln);
+    const e = fixEnd(s, xlCombine(edC ? r[edC] : (sdC ? r[sdC] : ''), etC ? r[etC] : '')) || s;
+    const rec = { s, e, pos };
+    if (tc !== undefined) rec.tc = tc;
+    const id = ((idC && String(r[idC]).trim()) || ('row' + n)).replace(/[.#$\[\]\/]/g, '_');
+    putIn(out.data, pk, ds, id, rec);
+    out.names[pk] = (nm.fn + ' ' + nm.ln).trim();
+    out.count++;
+  });
+  if (seen) { const t = dtMin(seen) - 60, d = new Date(t * 60000); seen = d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate()) + 'T' + pad2(d.getUTCHours()) + ':' + pad2(d.getUTCMinutes()); }
+  out.a = seen ? minStr(seen, cap) : '';
+  Object.values(out.data).forEach(days => Object.values(days).forEach(day => Object.values(day).forEach(rec => { if (out.a) rec.a = out.a; })));
+  return out;
+}
+function parseTimesheets(rows, cols, cap) {
+  const col = re => cols.find(c => re.test(c.trim()));
+  const fnC = col(/^first name$/i), lnC = col(/^last name$/i), dC = col(/^date$/i), stC = col(/^start time$/i), etC = col(/^end time$/i), posC = col(/^position$/i);
+  const out = { kind: 'punches', data: {}, names: {}, from: '', to: '', count: 0, a: '' };
+  let seen = '';
+  rows.forEach(r => {
+    const fn = (r[fnC] || '').toString().trim(), ln = (r[lnC] || '').toString().trim();
+    if (!fn && !ln) return;
+    const i = xlCombine(dC ? r[dC] : '', r[stC]);
+    if (!i) return;
+    const ds = i.slice(0, 10);
+    out.from = minStr(out.from, ds); out.to = maxStr(out.to, ds);
+    const rawOut = r[etC];
+    const o = (rawOut === '' || rawOut == null) ? '' : (fixEnd(i, xlCombine(dC ? r[dC] : '', rawOut)) || '');
+    seen = maxStr(seen, maxStr(i, o));
+    if (schedSkip(ln + ', ' + fn, posC ? r[posC] : '')) return;
+    const pk = schedKeyFor(fn, ln);
+    putIn(out.data, pk, ds, i.slice(11, 16).replace(':', ''), { i, o });
+    out.names[pk] = (fn + ' ' + ln).trim();
+    out.count++;
+  });
+  out.a = minStr(seen, cap);
+  return out;
+}
+// When I Work "Schedule" export: one row per shift with First/Last Name, Shift Start Date,
+// Shift Start Time ("5:30 am") and Shift End Time. It has no clock-in info, so these
+// shifts show as scheduled until a Timesheets export is added for the same days.
+// When I Work stops this export at 4,000 shifts, so a long date range gets cut off.
+const SCHED_EXPORT_CAP = 4000;
+function parseScheduleExport(rows, cols) {
+  const col = re => cols.find(c => re.test(c.trim()));
+  const fnC = col(/^first name$/i), lnC = col(/^last name$/i), dC = col(/^shift start date$/i),
+        stC = col(/^shift start time$/i), etC = col(/^shift end time$/i), posC = col(/^position$/i);
+  const out = { kind: 'shifts', label: 'Schedule export', data: {}, names: {}, from: '', to: '', count: 0, a: '', noTc: true,
+                capped: rows.length >= SCHED_EXPORT_CAP };
+  rows.forEach(r => {
+    const fn = (r[fnC] || '').toString().trim(), ln = (r[lnC] || '').toString().trim();
+    const s = xlCombine(r[dC], r[stC]);
+    if (!s) return;
+    const ds = s.slice(0, 10);
+    out.from = minStr(out.from, ds); out.to = maxStr(out.to, ds);
+    const pos = posC ? (r[posC] || '').toString().trim() : '';
+    if ((!fn && !ln) || /^open\s*shift$/i.test(fn)) return; // OpenShift (nobody assigned)
+    if (schedSkip(ln + ', ' + fn, pos)) return;
+    const pk = schedKeyFor(fn, ln);
+    const e = fixEnd(s, xlCombine(r[dC], r[etC])) || s;
+    const day = ((out.data[pk] = out.data[pk] || {})[ds] = out.data[pk][ds] || {});
+    let id = s.slice(11, 16).replace(':', ''), n = 2;
+    while (day[id]) id = s.slice(11, 16).replace(':', '') + '_' + (n++);
+    day[id] = { s, e, pos };
+    out.names[pk] = (fn + ' ' + ln).trim();
+    out.count++;
+  });
+  return out;
+}
+// Fold a second file of the same kind into what's already waiting, so several
+// date-range exports can be dropped in together. Each file's own dates are kept
+// in "ranges", so only the days a file covers get replaced on import.
+function mergeSchedPart(prev, part) {
+  if (!prev) return part;
+  Object.entries(part.data).forEach(([pk, days]) => Object.entries(days).forEach(([ds, obj]) => {
+    ((prev.data[pk] = prev.data[pk] || {})[ds] = Object.assign(prev.data[pk][ds] || {}, obj));
+  }));
+  Object.assign(prev.names, part.names);
+  prev.from = minStr(prev.from, part.from); prev.to = maxStr(prev.to, part.to);
+  prev.count += part.count;
+  prev.ranges = prev.ranges.concat(part.ranges);
+  prev.capped = prev.capped || part.capped;
+  prev.noTc = prev.noTc && part.noTc;
+  if (prev.label !== part.label) prev.label = 'Shifts';
+  return prev;
+}
+function addScheduleFile(sched, file) {
+  const cap = localDT(Math.min(file && file.lastModified ? file.lastModified : Date.now(), Date.now()));
+  const part = sched.kind === 'shifts' ? parseShiftsReport(sched.rows, sched.cols, cap)
+             : sched.kind === 'schedule' ? parseScheduleExport(sched.rows, sched.cols)
+             : parseTimesheets(sched.rows, sched.cols, cap);
+  if (!part.from) { toast('No shifts or punches found in ' + (file ? file.name : 'that file'), 'error'); return; }
+  part.label = part.label || (part.kind === 'shifts' ? 'Shifts report' : 'Timesheets');
+  part.ranges = [{ from: part.from, to: part.to, a: part.a, capped: !!part.capped }];
+  pendingSchedule = pendingSchedule || {};
+  pendingSchedule[part.kind] = mergeSchedPart(pendingSchedule[part.kind], part);
+  renderSchedPreview();
+}
+
+// ── Judge one person's day: each scheduled shift vs. that day's clock punches
+function judgeDay(shiftsObj, punchesObj, punchAsOf, cellVal) {
+  const shifts = Object.values(shiftsObj || {}).filter(x => x && x.s).sort((a, b) => a.s.localeCompare(b.s));
+  if (!shifts.length) return null;
+  const punches = Object.values(punchesObj || {}).filter(x => x && x.i).sort((a, b) => a.i.localeCompare(b.i));
+  const used = new Set();
+  const excused = /^excused$/i.test(String(cellVal || '').trim()) || parseStoMins(cellVal) !== null;
+  const list = shifts.map(sh => {
+    const s = dtMin(sh.s), e = dtMin(sh.e) || s;
+    let best = -1, bestD = Infinity;
+    punches.forEach((p, idx) => {
+      if (used.has(idx)) return;
+      const pi = dtMin(p.i);
+      if (pi === null || pi < s - 240 || pi > e) return; // clock-in from 4h before start up to the scheduled end
+      const dd = Math.abs(pi - s);
+      if (dd < bestD) { bestD = dd; best = idx; }
+    });
+    const r = { s: sh.s, e: sh.e, pos: sh.pos || '' };
+    if (best >= 0) {
+      used.add(best);
+      const p = punches[best];
+      r.i = p.i; r.o = p.o || '';
+      r.late = dtMin(p.i) - s;
+      r.early = p.o ? e - dtMin(p.o) : null;
+      r.status = r.late >= SCHED_GRACE_MIN ? 'late' : (r.early !== null && r.early >= SCHED_GRACE_MIN ? 'early' : 'ok');
+    } else if (sh.tc === true) {
+      r.status = 'worked';
+    } else {
+      const ended = (sh.tc === false && sh.a && dtMin(sh.a) >= e) || (punchAsOf && dtMin(punchAsOf) >= e);
+      if (ended) r.status = excused ? 'callout' : 'absent';
+      // Schedule export only (no clock-in info for this day) and the shift is over
+      else if (sh.tc === undefined && !punchAsOf && dtMin(localDT(Date.now())) >= e) r.status = 'nodata';
+      else r.status = 'pending';
+    }
+    return r;
+  });
+  const worst = list.reduce((w, r) => SCHED_META[r.status].rank > SCHED_META[w.status].rank ? r : w, list[0]);
+  return { list, worst };
+}
+function schedDay(pk, ds, cellVal) {
+  const sh = ((schedData.shifts || {})[pk] || {})[ds];
+  if (!sh) return null;
+  if (cellVal === undefined) { const p = attendanceData[pk]; cellVal = p && p.dates ? p.dates[ds] : ''; }
+  return judgeDay(sh, ((schedData.punches || {})[pk] || {})[ds], (schedData.punchDays || {})[ds], cellVal);
+}
+function schedOutcome(r) {
+  if (r.i) {
+    let t = 'In ' + fmt12(r.i);
+    if (r.late >= SCHED_GRACE_MIN) t += ' (' + schedMinsLabel(r.late) + ' late)';
+    else if (r.late > 0) t += ' (' + r.late + 'm, under the 8m grace)';
+    if (!r.o) t += ' · not clocked out';
+    else { t += ' · Out ' + fmt12(r.o); if (r.early >= SCHED_GRACE_MIN) t += ' (' + schedMinsLabel(r.early) + ' early)'; }
+    return t;
+  }
+  if (r.status === 'worked') return 'Clocked in (add the Timesheets export for exact times)';
+  if (r.status === 'absent') return 'No clock-in on record';
+  if (r.status === 'callout') return 'No clock-in; marked Excused / NYC-PS&STO in the tracker';
+  if (r.status === 'nodata') return 'No clock-in info for this day yet (import the Timesheets export to check)';
+  return 'Not checked yet (shift hadn’t ended when the report was pulled)';
+}
+function schedRangeText(r) { return fmt12(r.s) + ' – ' + fmt12(r.e); }
+// Compact time for a grid cell: "4p", "8:45a", "12a"
+function fmtShort(dt) {
+  const t = (dt || '').slice(11, 16); if (!t) return '';
+  const [h, m] = t.split(':').map(Number);
+  return (h % 12 || 12) + (m ? ':' + pad2(m) : '') + (h >= 12 ? 'p' : 'a');
+}
+// What a grid cell shows on a scheduled day: green block with the shift time
+// written in (under the tracker value, if the cell has one). Clock-in details
+// are in the hover text and the edit popup.
+function schedCellParts(pk, ds, v) {
+  const sd = schedDay(pk, ds, v);
+  const ns = v ? noticeShift(pk, ds) : null;
+  const why = ns && ns.reason ? 'Attendance notice: ' + ns.reason + (ns.clocked ? ' · clocked ' + ns.clocked : '') : '';
+  if (!sd) {
+    // Not in the When I Work schedule export (a no-show's shift often gets removed or
+    // reassigned afterward), so use the shift the attendance notice recorded
+    if (!ns) return null;
+    return {
+      html: `<span class="sch-time">${fmtShort(ns.s)}-${fmtShort(ns.e)}</span>`,
+      title: ['Shift ' + schedRangeText(ns) + ' (from the attendance notice; not in the When I Work schedule)', why].filter(Boolean).join('\n')
+    };
+  }
+  return {
+    html: sd.list.map(r => `<span class="sch-time">${fmtShort(r.s)}-${fmtShort(r.e)}</span>`).join(''),
+    title: sd.list.map(r => 'Scheduled ' + schedRangeText(r) + ': ' + schedOutcome(r)).concat(why ? [why] : []).join('\n')
+  };
+}
+// The shift an Attendance Notices row recorded for this day, from its note:
+// "no show on shift | Shift: 04:00 PM - 11:00 PM" or "late on clock-in (28 minutes) | Shift: ... | Clocked: ..."
+function noticeShift(pk, ds) {
+  const p = attendanceData[pk];
+  const note = String((p && p.notes && p.notes[ds]) || '');
+  const m = /Shift:\s*(\d{1,2}:\d{2}\s*[AP]M)\s*-\s*(\d{1,2}:\d{2}\s*[AP]M)/i.exec(note);
+  if (!m) return null;
+  const a = parseTimeToMins(m[1]), b = parseTimeToMins(m[2]);
+  if (a === null || b === null) return null;
+  const hm = x => pad2(Math.floor(x / 60) % 24) + ':' + pad2(x % 60);
+  const s = ds + 'T' + hm(a), e = fixEnd(s, ds + 'T' + hm(b));
+  const cl = /Clocked:\s*([^|]*)/i.exec(note);
+  return { s, e, reason: note.split('|')[0].trim(), clocked: cl ? cl[1].trim() : '' };
+}
+function renderEditSched(pk, ds) {
+  const box = document.getElementById('editSched'); if (!box) return;
+  const sd = schedDay(pk, ds);
+  if (!sd) {
+    const ns = ((attendanceData[pk] || {}).dates || {})[ds] ? noticeShift(pk, ds) : null;
+    if (!ns) { box.style.display = 'none'; box.innerHTML = ''; return; }
+    box.innerHTML = '<div class="note-label" style="margin-bottom:6px">&#128197; Shift (from the attendance notice)</div>' +
+      `<div class="sb-row"><span class="sb-dot sch-bad"></span><div>` +
+      `<div class="sb-main">Scheduled ${escHtml(schedRangeText(ns))}</div>` +
+      `<div class="sb-sub">${escHtml(ns.reason ? ns.reason.charAt(0).toUpperCase() + ns.reason.slice(1) : '')}${ns.clocked ? ' &middot; clocked ' + escHtml(ns.clocked) : ''}. This shift isn&rsquo;t in the When I Work schedule export anymore.</div></div></div>`;
+    box.style.display = 'block';
+    return;
+  }
+  box.innerHTML = '<div class="note-label" style="margin-bottom:6px">&#128197; Schedule (When I Work)</div>' + sd.list.map(r =>
+    `<div class="sb-row"><span class="sb-dot sch-${SCHED_META[r.status].cls}"></span><div>` +
+    `<div class="sb-main">Scheduled ${escHtml(schedRangeText(r))}${r.pos ? '<span class="sb-pos">' + escHtml(r.pos) + '</span>' : ''}</div>` +
+    `<div class="sb-sub">${escHtml(schedOutcome(r))}</div></div></div>`).join('');
+  box.style.display = 'block';
+}
+// ── Profile attendance calendar (3 months), for walking someone through a corrective action.
+// A day's color comes from the tracker entry first (that's the official record), then
+// from the When I Work schedule for days with no entry.
+let pfCalEnd = null; // 'YYYY-MM' of the last month shown
+const CAL_KINDS = {
+  worked:  { label: 'Worked' },
+  late:    { label: 'Late (0.5)' },
+  absent:  { label: 'Absent (1)' },
+  noin:    { label: 'Scheduled, no clock-in' },
+  excused: { label: 'Excused' },
+  sick:    { label: 'NYC-PS&STO' },
+  sched:   { label: 'Scheduled' },
+  tosick:  { label: 'Sick (approved)' },
+  tooff:   { label: 'Time off (approved)' }
+};
+function calDay(pk, ds, today) {
+  const p = attendanceData[pk] || {};
+  const v = String(((p.dates || {})[ds]) || '').trim();
+  const sd = schedDay(pk, ds, v);
+  const tod = timeOffDay(pk, ds);
+  const pts = getPoints(v);
+  let kind = '';
+  if (pts >= 1 || /^nc\s*\/?\s*ns$/i.test(v)) kind = 'absent';
+  else if (pts > 0) kind = 'late';
+  else if (tod) kind = tod.k === 'sick' ? 'tosick' : 'tooff';
+  else if (/^excused$/i.test(v)) kind = 'excused';
+  else if (parseStoMins(v) !== null) kind = 'sick';
+  else if (sd) {
+    if (sd.worst.status === 'absent') kind = 'noin';
+    else if (ds > today || sd.list.every(r => r.status === 'pending' || r.status === 'nodata')) kind = 'sched';
+    else kind = 'worked';
+  }
+  const wu = /^(1st|2nd|final|terminated|term)$/i.test(v);
+  const lines = [fmtDateLong(ds) + (kind ? ': ' + (kind === 'sick' ? 'NYC-PS&STO: ' + schedMinsLabel(parseStoMins(v)) : CAL_KINDS[kind].label) : '')];
+  if (wu) lines.push('Write-up: ' + v);
+  if (tod) lines.push(tod.title);
+  if (sd) sd.list.forEach(r => lines.push('Scheduled ' + schedRangeText(r) + (r.i ? ' · ' + schedOutcome(r) : '')));
+  const note = (p.notes || {})[ds]; if (note) lines.push(note);
+  const un = (p.userNotes || {})[ds]; if (un) lines.push('Note: ' + un);
+  return { kind, wu, tip: lines.join('\n') };
+}
+function pfCalStep(n) {
+  if (!pfCalEnd) return;
+  const [y, m] = pfCalEnd.split('-').map(Number);
+  const t = new Date(Date.UTC(y, m - 1 + n, 1));
+  const next = t.getUTCFullYear() + '-' + pad2(t.getUTCMonth() + 1);
+  if (next > todayYMD().slice(0, 7)) return; // nothing to show past this month
+  pfCalEnd = next; renderPfCal();
+}
+function renderPfCal() {
+  const el = document.getElementById('pfSched');
+  if (!el || !pfPerson || !pfCalEnd) return;
+  const today = todayYMD();
+  const [ey, em] = pfCalEnd.split('-').map(Number);
+  const months = [-2, -1, 0].map(off => { const t = new Date(Date.UTC(ey, em - 1 + off, 1)); return { y: t.getUTCFullYear(), m: t.getUTCMonth() + 1 }; });
+  const MN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const counts = { worked: 0, late: 0, absent: 0, noin: 0, tosick: 0, tooff: 0, excused: 0, sick: 0, unchecked: 0 };
+  const monthHtml = months.map(({ y, m }) => {
+    const first = new Date(Date.UTC(y, m - 1, 1)).getUTCDay(), days = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    let cells = ['S','M','T','W','T','F','S'].map(d => `<div class="pf-cal-dow">${d}</div>`).join('');
+    for (let i = 0; i < first; i++) cells += '<div class="pf-cal-day empty"></div>';
+    for (let d = 1; d <= days; d++) {
+      const ds = y + '-' + pad2(m) + '-' + pad2(d);
+      const c = calDay(pfPerson, ds, today);
+      if (c.kind && counts[c.kind] !== undefined) counts[c.kind]++;
+      if (c.kind === 'sched' && ds < today) counts.unchecked++; // past scheduled day, no clock-in info yet
+      const cls = (c.kind ? ' cal-' + c.kind : '') + (c.wu ? ' cal-wu' : '') + (ds === today ? ' cal-today' : '') + (ds > today ? ' cal-future' : '');
+      cells += `<div class="pf-cal-day${cls}" title="${escHtml(c.tip).replace(/\n/g, '&#10;')}">${d}</div>`;
+    }
+    return `<div class="pf-cal-month"><div class="pf-cal-title">${MN[m - 1]} ${y}</div><div class="pf-cal-grid">${cells}</div></div>`;
+  }).join('');
+  const atEnd = pfCalEnd >= today.slice(0, 7);
+  const chip = (k, n) => `<span class="pf-cal-count"><i class="cal-${k}"></i>${n} ${k === 'sick' ? 'NYC-PS&amp;STO' : escHtml(CAL_KINDS[k].label)}</span>`;
+  // "Worked" only means something once clock-in info is imported, so skip a 0 there when
+  // the scheduled days just haven't been checked yet
+  const summary = ['worked', 'late', 'absent', 'noin', 'tosick', 'tooff', 'excused', 'sick'].filter(k => counts[k] || ['late', 'absent'].includes(k) || (k === 'worked' && !counts.unchecked)).map(k => chip(k, counts[k])).join('') +
+    (counts.unchecked ? `<span class="pf-cal-count"><i class="cal-sched"></i>${counts.unchecked} Scheduled, no clock-in info yet</span>` : '');
+  el.innerHTML =
+    `<div class="pf-cal-head"><div class="pf-sub" style="margin:0">Attendance, ${MN[months[0].m - 1].slice(0, 3)} – ${MN[months[2].m - 1].slice(0, 3)} ${months[2].y}</div>` +
+    `<div class="pf-cal-nav"><button class="btn" onclick="pfCalStep(-1)" aria-label="Earlier months">&#8249;</button><button class="btn" onclick="pfCalStep(1)" aria-label="Later months"${atEnd ? ' disabled style="opacity:0.35;cursor:default"' : ''}>&#8250;</button></div></div>` +
+    `<div class="pf-cal-months">${monthHtml}</div>` +
+    `<div class="pf-cal-summary">${summary}</div>` +
+    `<div class="pf-cal-legend"><span><i class="cal-sched"></i>Scheduled (upcoming, or no clock-in info yet)</span><span><i class="cal-wu-key"></i>Write-up</span><span class="pf-cal-hint">Green days come from the When I Work schedule import; yellow and pink days from the time-off report. Hover a day for details.</span></div>`;
+  el.style.display = 'block';
+}
+
+// ── Import preview: what the files show before anything is saved
+function renderSchedPreview() {
+  const el = document.getElementById('schedPreview');
+  if (!el) return;
+  const ps = pendingSchedule;
+  if (!ps) { el.style.display = 'none'; el.innerHTML = ''; return; }
+  const rng = p => fmtMD(p.from) + (p.from === p.to ? '' : ' \u2013 ' + fmtMD(p.to));
+  let html = '<p style="margin-bottom:6px"><strong>Schedule</strong> <span style="color:var(--text-muted)">(shows scheduled days on the grid, no points added)</span></p>';
+  if (ps.shifts) {
+    const people = Object.keys(ps.shifts.data).length;
+    html += `<div class="sp-file ok">&#10003; ${escHtml(ps.shifts.label)}: ${ps.shifts.count} shifts for ${people} people, ${rng(ps.shifts)}</div>`;
+  } else {
+    html += '<div class="sp-file">&#9675; Shifts report (scheduled days) not added</div>';
+  }
+  if (ps.punches) html += `<div class="sp-file ok">&#10003; Timesheets: ${ps.punches.count} clock-ins, ${rng(ps.punches)} (exact in/out times when you click a day)</div>`;
+  if (!ps.shifts && !Object.keys(schedData.shifts || {}).length) html += '<div class="sp-hint">Add the Shifts report too. Timesheets alone can\u2019t show which days were scheduled.</div>';
+  if (ps.shifts && ps.shifts.capped) {
+    const cut = ps.shifts.ranges.filter(r => r.capped).map(r => fmtMD(r.to)).join(', ');
+    html += `<div class="sp-hint">When I Work stopped this export at ${SCHED_EXPORT_CAP.toLocaleString()} shifts, so it ends on ${cut} even if you picked a longer range. Export the days after that as another file (about 4 months at a time) and drop it in too.</div>`;
+  }
+  if (ps.shifts && ps.shifts.noTc && !ps.punches) html += '<div class="sp-hint">This file has no clock-in info, so past shifts show as scheduled. Add the Timesheets export for the same days to see late, early and missed shifts.</div>';
+  el.innerHTML = html;
+  el.style.display = 'block';
+  document.getElementById('confirmImportBtn').style.display = 'inline-flex';
+}
+function confirmScheduleImport() {
+  const ps = pendingSchedule; pendingSchedule = null;
+  if (!ps) return;
+  const up = {};
+  const replace = (bucket, part) => {
+    const stored = schedData[bucket] || {};
+    const inFile = ds => part.ranges.some(r => ds >= r.from && ds <= r.to); // only the days each file covers
+    Object.keys(stored).forEach(pk => Object.keys(stored[pk] || {}).forEach(ds => {
+      if (inFile(ds) && !((part.data[pk] || {})[ds])) up[bucket + '/' + pk + '/' + ds] = null;
+    }));
+    Object.entries(part.data).forEach(([pk, days]) => Object.entries(days).forEach(([ds, obj]) => { up[bucket + '/' + pk + '/' + ds] = obj; }));
+    Object.entries(part.names).forEach(([pk, n]) => { up['names/' + pk] = n; });
+  };
+  if (ps.shifts) replace('shifts', ps.shifts);
+  if (ps.punches) {
+    replace('punches', ps.punches);
+    ps.punches.ranges.forEach(r => {
+      for (let d = r.from; d <= r.to; d = ymdAdd(d, 1)) up['punchDays/' + d] = maxStr(up['punchDays/' + d] || (schedData.punchDays || {})[d], r.a);
+    });
+  }
+  if (!Object.keys(up).length) return;
+  schedRef.update(up).catch(err => toast('Schedule save failed: ' + err.message, 'error'));
+  const people = new Set([...Object.keys((ps.shifts || {}).data || {}), ...Object.keys((ps.punches || {}).data || {})]).size;
+  const r = ps.shifts || ps.punches;
+  logImport(people, fmtMD(r.from) + (r.from === r.to ? '' : ' - ' + fmtMD(r.to)), ps.shifts && ps.punches ? 'Schedule + Timesheets' : ps.shifts ? 'Schedule' : 'Timesheets');
+  const bits = [];
+  if (ps.shifts) bits.push(ps.shifts.count + ' shifts');
+  if (ps.punches) bits.push(ps.punches.count + ' clock-ins');
+  toast('Saved ' + bits.join(' and '), 'success');
+}
+// ───────────────────────────────────────────────────────────────
+
+// ── Approved time off (When I Work Time-Off Requests report) ────────────────
+// Display only, in its own Firebase node so it can't touch attendance data:
+//   timeoff_usq_gm/days/{person}/{YYYY-MM-DD}/{request} = { k: 'sick'|'off', t: type, w: hours that day ('' = all day), by, m }
+//   timeoff_usq_gm/names/{person} = name as it appears in the report
+// Importing the report replaces what's stored for the dates the report covers, so a
+// request canceled in When I Work disappears on the next import.
+function loadTimeOff() {
+  timeOffRef.off();
+  timeOffRef.on('value', snap => {
+    timeOffData = snap.val() || {};
+    rebuildDates(); renderTable();
+    if (editingPerson && editingDate) renderEditTimeOff(editingPerson, editingDate);
+    if (pfPerson) renderPfCal();
+  }, err => console.warn('Time off load failed:', err.message));
+}
+function timeOffWindow(a, b) {
+  const t = m => { m = Math.max(0, Math.min(1439, m)); const h = Math.floor(m / 60), mm = m % 60; return (h % 12 || 12) + ':' + pad2(mm) + ' ' + (h >= 12 ? 'PM' : 'AM'); };
+  return t(a) + ' – ' + t(b >= 1440 ? 1439 : b);
+}
+// One person's approved time off on a day: sick wins if there's both
+function timeOffDay(pk, ds) {
+  const day = ((timeOffData.days || {})[pk] || {})[ds];
+  if (!day) return null;
+  const list = Object.values(day).filter(Boolean);
+  if (!list.length) return null;
+  const k = list.some(r => r.k === 'sick') ? 'sick' : 'off';
+  const line = r => (r.k === 'sick' ? '🤒 Approved sick time' : 'Approved time off (' + r.t + ')') + ': ' + (r.w || 'all day') + (r.by ? ' · approved by ' + r.by : '');
+  return { k, list, title: list.map(line).join('\n') };
+}
+function renderEditTimeOff(pk, ds) {
+  const box = document.getElementById('editTimeOff'); if (!box) return;
+  const tod = timeOffDay(pk, ds);
+  if (!tod) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  box.innerHTML = '<div class="note-label" style="margin-bottom:6px">' + (tod.k === 'sick' ? '&#129298; Approved sick time' : '&#127796; Approved time off') + ' (When I Work)</div>' + tod.list.map(r =>
+    `<div class="sb-row"><span class="sb-dot" style="background:${r.k === 'sick' ? '#f472b6' : '#facc15'}"></span><div>` +
+    `<div class="sb-main">${escHtml(r.t)} &middot; ${escHtml(r.w || 'All day')}</div>` +
+    `<div class="sb-sub">${r.by ? 'Approved by ' + escHtml(r.by) : 'Approved'}${r.m ? ' &middot; &ldquo;' + escHtml(r.m) + '&rdquo;' : ''}</div></div></div>`).join('');
+  box.style.display = 'block';
+}
+function confirmTimeOffImport() {
+  const to = pendingTimeOff; pendingTimeOff = null;
+  if (!to) return 0;
+  const up = {};
+  const stored = timeOffData.days || {};
+  Object.keys(stored).forEach(pk => Object.keys(stored[pk] || {}).forEach(ds => {
+    if (ds >= to.from && ds <= to.to && !((to.data[pk] || {})[ds])) up['days/' + pk + '/' + ds] = null;
+  }));
+  Object.entries(to.data).forEach(([pk, days]) => Object.entries(days).forEach(([ds, obj]) => { up['days/' + pk + '/' + ds] = obj; }));
+  Object.entries(to.names).forEach(([pk, n]) => { up['names/' + pk] = n; });
+  if (Object.keys(up).length) timeOffRef.update(up).catch(err => toast('Time off save failed: ' + err.message, 'error'));
+  return to.days;
+}
+// ───────────────────────────────────────────────────────────────
+
 let pfPerson = null;
 function fmtUSShort(ds) { return /^\d{4}-\d{2}-\d{2}/.test(ds) ? fmtUS(ds) : ds; }
 function pfLatestWriteupInfo(dates) {
@@ -2109,7 +2984,7 @@ function openProfile(key) {
   let status, warn = false;
   if (termed) { status = '<span class="writeup-tag wu-term" style="margin:0">Term</span> Terminated' + (wu && wu.label === 'Terminated' ? ' on ' + fmtUSShort(wu.date) : ''); warn = true; }
   else if (wu && ['1st','2nd','final'].includes(wu.val)) {
-    status = getWriteupTagHtml(dates).replace('margin-left:6px', '') + ' On a corrective action: <strong>' + wu.label + '</strong> issued ' + fmtUSShort(wu.date) + '. ' + fp(getWriteupPts(dates)) + ' pts since.';
+    status = getWriteupTagHtml(dates).replace('margin-left:6px', '') + ' On a corrective action: <strong>' + wu.label + '</strong> issued ' + fmtUSShort(wu.date) + '. ' + fp(getWriteupPts(dates)) + ' of ' + caThreshold(dates) + ' pts toward the ' + CA_STAGES[caNextStage(dates)].label + '.';
     warn = true;
   } else {
     status = 'Not on a corrective action' + (wu && wu.val === 'completed' ? ' (last cycle completed ' + fmtUSShort(wu.date) + ')' : '') + '.';
@@ -2121,9 +2996,12 @@ function openProfile(key) {
     [fp(annual), 'Annual pts', ptsColor(annual)],
     [fp(m6), 'Last 6 months', ptsColor(m6)],
     [fp(d90), 'Last 90 days', ptsColor(d90)],
-    [fp(wpt), 'Since write-up', ptsColor(wpt)],
+    [fp(wpt), 'Since write-up', getLatestWriteup(dates) !== null && !termed ? wuStageColor(dates, 'pts-') : ptsColor(wpt)],
     [fmtStoHrs(sto), 'PS&amp;STO hrs left', stoColorClass(sto)]
   ].map(([v, l, c]) => `<div class="pf-stat"><div class="v ${c}">${v}</div><div class="l">${l}</div></div>`).join('');
+  // Attendance calendar: the current month and the two before it
+  pfCalEnd = todayYMD().slice(0, 7);
+  renderPfCal();
   document.getElementById('pfId').value = e.id || caRowId(p) || '';
   document.getElementById('pfEmail').value = e.email || '';
   document.getElementById('pfPhone').value = e.phone || '';

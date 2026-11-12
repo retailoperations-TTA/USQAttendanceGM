@@ -122,8 +122,12 @@
   tbody td:nth-child(5){left:var(--sl5,412px);min-width:95px;text-align:center;font-weight:600;border-right:1px solid rgba(108,140,255,0.25)}
   tbody td.date-cell{text-align:center;cursor:pointer;min-width:55px;transition:background 0.1s;font-weight:600;font-size:0.78rem;position:relative}
   tbody td.date-cell:hover{background:var(--surface2)}
+  tbody td.date-cell.has-hist::before{content:'';position:absolute;top:0;left:0;border-style:solid;border-width:6px 6px 0 0;border-color:var(--accent) transparent transparent transparent;opacity:0.85;pointer-events:none}
+  .key-corner{display:inline-block;width:12px;height:12px;border-radius:2px;background:var(--surface2);border:1px solid var(--border);position:relative;overflow:hidden}
+  .key-corner::before{content:'';position:absolute;top:0;left:0;border-style:solid;border-width:6px 6px 0 0;border-color:var(--accent) transparent transparent transparent}
   tbody td.period-cell{text-align:center;cursor:default;min-width:80px;transition:background 0.1s;font-weight:600;font-size:0.8rem}
-  thead th.date-col{text-align:center;min-width:55px}
+  thead th.date-col{text-align:center;min-width:55px;line-height:1.35}
+  thead th.date-col .dow{display:block;font-size:0.6rem;font-weight:500;color:var(--text-dim);letter-spacing:0.08em}
   thead th.period-col{text-align:center;min-width:80px}
   tbody tr:hover td{background:var(--surface)}
   tbody tr:hover td:nth-child(1),tbody tr:hover td:nth-child(2),tbody tr:hover td:nth-child(3),tbody tr:hover td:nth-child(4),tbody tr:hover td:nth-child(5){background:var(--surface)}
@@ -353,6 +357,7 @@
       <div class="key-sep"></div>
       <div class="key-item"><div class="key-swatch" style="background:#38bdf8"></div> PS&amp;STO used</div>
       <div class="key-item"><span style="color:#facc15;font-size:0.85rem">&#9733;</span> Has note</div>
+      <div class="key-item" title="Someone changed this cell by hand and it still shows their change (an import hasn't replaced it)"><span class="key-corner"></span> Edited by hand</div>
       <div class="key-sep sched-key"></div>
       <div class="key-item sched-key"><div class="key-swatch" style="background:rgba(74,222,128,0.22);border:1px solid rgba(74,222,128,0.55)"></div> Scheduled (shift time shown)</div>
       <div class="key-sep to-key"></div>
@@ -775,6 +780,7 @@ function loadData() {
   dataRef.on('value', snap => {
     attendanceData = snap.val() || {};
     caDataLoaded = true;
+    fbLoaded = true;
     committedState = JSON.stringify(attendanceData);
     localStorage.setItem('bt_attendance_usq_gm', JSON.stringify(attendanceData));
     rebuildDates(); renderTable();
@@ -793,10 +799,42 @@ function loadData() {
   });
 }
 // ── Undo ──
-// committedState = last saved/synced data. Every saveData() pushes it onto the stack first.
+// committedState = last saved/synced data. Each saveData() pushes the reverse of
+// just the cells it changed, so undo puts back only your own change.
 const UNDO_LIMIT = 25;
 let undoStack = [];
 let committedState = '{}';
+let fbLoaded = false;   // true once Firebase has sent the data at least once
+// Build a Firebase multi-path update holding only what changed between two copies
+// of the data. Removed keys become null (Firebase deletes them). Returns null when
+// a key can't be used in a Firebase path, so the caller falls back to a full save.
+function diffForFirebase(before, after, segs, out) {
+  out = out || {}; segs = segs || [];
+  const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+  const norm = v => (isObj(v) && !Object.keys(v).length) ? undefined : v; // Firebase drops empty objects
+  for (const k of new Set([...Object.keys(before || {}), ...Object.keys(after || {})])) {
+    const b = norm(before ? before[k] : undefined), a = norm(after ? after[k] : undefined);
+    const s = segs.concat(k);
+    if (isObj(b) && isObj(a)) { if (diffForFirebase(b, a, s, out) === null) return null; continue; }
+    if (JSON.stringify(b) === JSON.stringify(a)) continue;
+    if (s.some(x => !x || /[.#$\[\]\/]/.test(x))) return null;
+    out[s.join('/')] = a === undefined ? null : JSON.parse(JSON.stringify(a));
+  }
+  return out;
+}
+// Apply a multi-path update to the local copy (same thing Firebase does server-side).
+function applyPatch(obj, patch) {
+  Object.entries(patch).forEach(([path, val]) => {
+    const segs = path.split('/'); let o = obj;
+    for (let i = 0; i < segs.length - 1; i++) {
+      if (o[segs[i]] === null || typeof o[segs[i]] !== 'object') o[segs[i]] = {};
+      o = o[segs[i]];
+    }
+    const last = segs[segs.length - 1];
+    if (val === null) delete o[last]; else o[last] = JSON.parse(JSON.stringify(val));
+  });
+  return obj;
+}
 function updateUndoBtn() {
   const b = document.getElementById('undoBtn');
   if (!b) return;
@@ -805,9 +843,16 @@ function updateUndoBtn() {
 }
 function undoLast() {
   if (!undoStack.length) { toast('Nothing to undo', 'error'); return; }
-  attendanceData = JSON.parse(undoStack.pop());
+  const step = undoStack.pop();
+  if (step.patch) {
+    // Put back only the cells that change touched; anything someone else saved since stays.
+    applyPatch(attendanceData, step.patch);
+    dataRef.update(step.patch).catch(err => toast('Undo failed: ' + err.message, 'error'));
+  } else {
+    attendanceData = JSON.parse(step.snapshot);
+    dataRef.set(attendanceData).catch(err => toast('Undo failed: ' + err.message, 'error'));
+  }
   committedState = JSON.stringify(attendanceData);
-  dataRef.set(attendanceData).catch(err => toast('Undo failed: ' + err.message, 'error'));
   localStorage.setItem('bt_attendance_usq_gm', committedState);
   rebuildDates(); renderTable(); updateUndoBtn();
   toast('Last change undone', 'success');
@@ -822,11 +867,18 @@ document.addEventListener('keydown', e => {
   }
 });
 function saveData() {
-  undoStack.push(committedState);
+  // Save only the changed cells so two people (or two tabs) editing at once can't
+  // wipe out each other's work. Full overwrite only if Firebase never loaded.
+  const before = JSON.parse(committedState);
+  const changes = fbLoaded ? diffForFirebase(before, attendanceData) : null;
+  if (changes && !Object.keys(changes).length) return; // nothing actually changed
+  const undoPatch = changes ? diffForFirebase(attendanceData, before) : null;
+  undoStack.push(undoPatch ? { patch: undoPatch } : { snapshot: committedState });
   if (undoStack.length > UNDO_LIMIT) undoStack.shift();
   committedState = JSON.stringify(attendanceData);
   updateUndoBtn();
-  dataRef.set(attendanceData).catch(err => toast('Save failed: ' + err.message, 'error'));
+  if (changes) dataRef.update(changes).catch(err => toast('Save failed: ' + err.message, 'error'));
+  else dataRef.set(attendanceData).catch(err => toast('Save failed: ' + err.message, 'error'));
   localStorage.setItem('bt_attendance_usq_gm', JSON.stringify(attendanceData));
 }
 // ── Main (hamburger) menu ──
@@ -1435,6 +1487,10 @@ function fmtDate(d) {
   try { const dt=new Date(d+'T00:00:00'); return (dt.getMonth()+1).toString().padStart(2,'0')+'/'+dt.getDate().toString().padStart(2,'0'); }
   catch(e) { return d; }
 }
+function fmtDow(d) {
+  try { return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(d+'T00:00:00').getDay()]||''; }
+  catch(e) { return ''; }
+}
 function getWeekKey(dateStr) {
   const d=new Date(dateStr+'T00:00:00'), day=d.getDay(), diff=day===0?-6:1-day;
   d.setDate(d.getDate()+diff); return d.toISOString().split('T')[0];
@@ -1483,7 +1539,7 @@ function renderTable() {
   }
   const headerCols=periodInfo
     ?filteredPeriods.map(p=>`<th class="period-col">${periodInfo.fmtFn(p)}</th>`).join('')
-    :filteredDates.map(d=>`<th class="date-col">${fmtDate(d)}</th>`).join('');
+    :filteredDates.map(d=>`<th class="date-col"><span class="dow">${fmtDow(d)}</span>${fmtDate(d)}</th>`).join('');
   document.getElementById('tableHead').innerHTML=`<tr><th title="NYC Paid Safe & Sick Time hours remaining (of ${STO_ANNUAL_HOURS})">PS&amp;STO</th><th>First Name</th><th>Last Name</th><th><span class="header-dropdown" onclick="togglePtsDropdown(event)">${ptsLabel}</span></th><th>Write-Up Pts</th>${headerCols}</tr>`;
   const caPending=new Set(caPendingKeys());
   document.getElementById('tableBody').innerHTML=people.map(([key,person])=>{
@@ -1502,7 +1558,7 @@ function renderTable() {
     if (periodInfo) {
       cells=filteredPeriods.map(p=>{ const pts=getPeriodPoints(dates,p,periodInfo.keyFn); const display=pts===0?'<span style="color:var(--text-muted)">&#183;</span>':(pts%1===0?pts:pts.toFixed(1)); return `<td class="period-cell ${pts>0?ptsColor(pts):''}">${display}</td>`; }).join('');
     } else {
-      cells=filteredDates.map(d=>{ const v=dates[d]||''; const hasUserNote=!!(userNotes[d]&&userNotes[d].trim()); const starHtml=hasUserNote?'<span class="note-star">&#9733;</span>':''; const lastEd=getCellEdits(person,d)[0]; const sc=showSched?schedCellParts(key,d,v):null; const tod=timeOffDay(key,d); const tip=[hasUserNote?userNotes[d]:'', tod?tod.title:'', sc?sc.title:'', lastEd?('Edited by '+lastEd.who+' \u00b7 '+fmtEditTs(lastEd.ts)):''].filter(Boolean).join('\n'); const titleAttr=tip?` title="${tip.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"`:'' ; const vs=String(v).trim(); const schCls=tod?' to-'+tod.k:!sc?'':' sched-on'+(getPoints(v)>=1||/^nc\s*\/?\s*ns$/i.test(vs)?' sched-one':getPoints(v)>0?' sched-half':/^excused$/i.test(vs)?' sched-exc':parseStoMins(v)!==null?' sched-sick':''); return `<td class="date-cell${schCls}" onclick="openEdit('${key.replace(/'/g,"\\'")}','${d}')"${titleAttr}>${tod&&tod.k==='sick'?'<span class="to-emoji">&#129298;</span>':''}${cellHtml(v)}${sc?sc.html:''}${starHtml}</td>`; }).join('');
+      cells=filteredDates.map(d=>{ const v=dates[d]||''; const hasUserNote=!!(userNotes[d]&&userNotes[d].trim()); const starHtml=hasUserNote?'<span class="note-star">&#9733;</span>':''; const lastEd=getCellEdits(person,d)[0]; const sc=showSched?schedCellParts(key,d,v):null; const tod=timeOffDay(key,d); const tip=[hasUserNote?userNotes[d]:'', tod?tod.title:'', sc?sc.title:'', lastEd?('Edited by '+lastEd.who+' \u00b7 '+fmtEditTs(lastEd.ts)):''].filter(Boolean).join('\n'); const titleAttr=tip?` title="${tip.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"`:'' ; const vs=String(v).trim(); const schCls=tod?' to-'+tod.k:!sc?'':' sched-on'+(getPoints(v)>=1||/^nc\s*\/?\s*ns$/i.test(vs)?' sched-one':getPoints(v)>0?' sched-half':/^excused$/i.test(vs)?' sched-exc':parseStoMins(v)!==null?' sched-sick':''); const histCls=isEditedAfterImport(person,d,v)?' has-hist':''; return `<td class="date-cell${schCls}${histCls}" onclick="openEdit('${key.replace(/'/g,"\\'")}','${d}')"${titleAttr}>${tod&&tod.k==='sick'?'<span class="to-emoji">&#129298;</span>':''}${cellHtml(v)}${sc?sc.html:''}${starHtml}</td>`; }).join('');
     }
     return `<tr><td class="${stoColorClass(stoRem)}" title="${getStoUsedMins(dates)>0?fmtMins(getStoUsedMins(dates))+' used of '+STO_ANNUAL_HOURS+':00':'No PS&STO used'}">${fmtStoHrs(stoRem)}</td><td><span class="name-badge clickable ${nc}" data-key="${escHtml(key)}" onclick="openProfile(this.dataset.key)" title="View profile">${fn}</span></td><td><span class="name-badge clickable ${nc}" data-key="${escHtml(key)}" onclick="openProfile(this.dataset.key)" title="View profile">${ln}</span>${wuTag}${caFolder}</td><td class="${ptsColor(mainPts)}">${mainPts>0?mainPts%1===0?mainPts:mainPts.toFixed(1):'0'}</td><td class="${getLatestWriteup(dates)!==null&&!termed?wuStageColor(dates,'pts-'):ptsColor(wp)}" title="${getLatestWriteup(dates)!==null&&!termed?fmtPts(wp)+' of '+caThreshold(dates)+' toward the '+CA_STAGES[caNextStage(dates)].label:''}">${wp>0?wp%1===0?wp:wp.toFixed(1):'0'}</td>${cells}</tr>`;
   }).join('');
@@ -1579,6 +1635,13 @@ function getCellEdits(p, dt) {
   const e = p && p.edits && p.edits[dt];
   if (!e) return [];
   return (Array.isArray(e) ? e : Object.values(e)).filter(Boolean).sort((a,b)=>b.ts-a.ts);
+}
+// Corner marker only when someone changed the cell by hand and that change is still
+// what the cell shows. Imports don't record edits, so if an import later replaced the
+// value, the newest hand edit no longer matches and the marker goes away.
+function isEditedAfterImport(p, dt, cur) {
+  const last = getCellEdits(p, dt)[0];
+  return !!last && String(last.to == null ? '' : last.to).trim() === String(cur == null ? '' : cur).trim();
 }
 function describeEdit(e) {
   const parts = [];
